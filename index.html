@@ -3,132 +3,268 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GLTF Model Viewer</title>
-    <link rel="stylesheet" href="style.css">
+    <title>3D Model Viewer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            width: 100%;
+        }
+
+        .upload-area {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .file-input {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .file-input-label {
+            display: block;
+            padding: 15px 25px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 16px;
+        }
+
+        .file-input-label:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .viewer-container {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            min-height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #viewer {
+            width: 100%;
+            height: 100%;
+            min-height: 560px;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .placeholder {
+            text-align: center;
+            color: #666;
+            font-size: 18px;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            color: #667eea;
+            font-size: 16px;
+        }
+
+        .error {
+            display: none;
+            text-align: center;
+            color: #e74c3c;
+            font-size: 16px;
+        }
+
+        .model-info {
+            display: none;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .upload-area {
+                padding: 15px;
+            }
+
+            .viewer-container {
+                min-height: 400px;
+                padding: 15px;
+            }
+
+            #viewer {
+                min-height: 360px;
+            }
+        }
+    </style>
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 </head>
 <body>
     <div class="container">
-        <header class="header">
-            <h1>GLTF Model Viewer</h1>
-            <p class="header-subtitle">View and interact with 3D GLTF/GLB models in your browser</p>
-        </header>
+        <div class="upload-area" id="uploadArea">
+            <div class="file-input-wrapper">
+                <input type="file" id="fileInput" class="file-input" accept=".gltf,.glb">
+                <label for="fileInput" class="file-input-label">
+                    📁 Upload Your 3D Model
+                </label>
+            </div>
+        </div>
 
-        <main class="main-content">
-            <div class="upload-section">
-                <div class="file-upload-wrapper">
-                    <input type="file" id="file-input" accept=".gltf,.glb" class="file-input">
-                    <label for="file-input" class="file-upload-label btn btn--primary">
-                        <span class="upload-icon">📁</span>
-                        Upload GLTF/GLB Model
-                    </label>
-                </div>
-                <div class="upload-info">
-                    <span class="file-size-limit">Max file size: 50MB • Supports .gltf and .glb files</span>
-                </div>
+        <div class="viewer-container">
+            <model-viewer
+                id="viewer"
+                camera-controls
+                touch-action="pan-y"
+                auto-rotate
+                auto-rotate-delay="3000"
+                rotation-per-second="30deg"
+                shadow-intensity="1"
+                environment-image="https://modelviewer.dev/shared-assets/environments/aircraft_workshop_01_1k.hdr"
+            ></model-viewer>
+
+            <div id="placeholder" class="placeholder">
+                🎯 Upload a 3D model to start viewing
             </div>
 
-            <div class="loading-indicator hidden" id="loading">
-                <div class="spinner"></div>
-                <span>Loading model...</span>
+            <div id="loading" class="loading">
+                ⏳ Loading your model...
             </div>
 
-            <div class="viewer-container">
-                <model-viewer
-                    id="model-viewer"
-                    src="https://modelviewer.dev/shared-assets/models/Astronaut.glb"
-                    alt="3D GLTF model viewer"
-                    camera-controls
-                    auto-rotate
-                    auto-rotate-delay="2000"
-                    rotation-per-second="30deg"
-                    loading="eager"
-                    shadow-intensity="1"
-                    shadow-softness="0.5"
-                    environment-image="https://modelviewer.dev/shared-assets/environments/moon_1k.hdr"
-                    exposure="1"
-                    tone-mapping="aces"
-                    interaction-policy="always-allow"
-                    touch-action="pan-y">
-                    <div class="progress-bar hide" slot="progress-bar">
-                        <div class="update-bar"></div>
-                    </div>
-                </model-viewer>
-                <div class="drag-drop-overlay hidden" id="drag-overlay">
-                    <div class="drag-drop-content">
-                        <div class="drag-drop-icon">📂</div>
-                        <div class="drag-drop-text">Drop GLTF/GLB file here</div>
-                    </div>
-                </div>
+            <div id="error" class="error">
+                ❌ Failed to load model. Please try a different file.
             </div>
+        </div>
 
-            <div class="controls-info">
-                <div class="card">
-                    <div class="card__body">
-                        <h3>Controls & Instructions</h3>
-                        <div class="instructions-grid">
-                            <div class="instruction-item">
-                                <strong>🖱️ Mouse Controls:</strong>
-                                <ul>
-                                    <li>Left-click + drag: Rotate model</li>
-                                    <li>Scroll wheel: Zoom in/out</li>
-                                    <li>Ctrl + left-click + drag: Pan view</li>
-                                    <li>Double-click: Reset camera</li>
-                                </ul>
-                            </div>
-                            <div class="instruction-item">
-                                <strong>📱 Touch Controls:</strong>
-                                <ul>
-                                    <li>Single finger drag: Rotate</li>
-                                    <li>Pinch: Zoom in/out</li>
-                                    <li>Two-finger drag: Pan view</li>
-                                </ul>
-                            </div>
-                            <div class="instruction-item">
-                                <strong>⌨️ Keyboard Shortcuts:</strong>
-                                <ul>
-                                    <li>R: Reset camera position</li>
-                                    <li>Spacebar: Toggle auto-rotation</li>
-                                    <li>F: Toggle fullscreen</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="info-section">
-                <div class="card">
-                    <div class="card__body">
-                        <h3>About GLTF Format</h3>
-                        <p>GLTF (Graphics Language Transmission Format) is a 3D file format that efficiently transmits and loads 3D scenes and models. It's designed to minimize file size and runtime processing, making it perfect for web applications.</p>
-                        
-                        <h4>Supported Features:</h4>
-                        <ul class="features-list">
-                            <li>✅ GLTF (.gltf) and GLB (.glb) formats</li>
-                            <li>✅ Drag and drop file upload</li>
-                            <li>✅ Automatic model rotation</li>
-                            <li>✅ Camera controls and navigation</li>
-                            <li>✅ Mobile touch support</li>
-                            <li>✅ Realistic lighting and shadows</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <div class="error-message hidden" id="error-message">
-                <div class="status status--error">
-                    <span id="error-text">An error occurred</span>
-                    <button class="error-close" id="error-close">×</button>
-                </div>
-            </div>
-        </main>
-
-        <footer class="footer">
-            <p>Built with <a href="https://modelviewer.dev" target="_blank">model-viewer</a> • Perfect for GitHub Pages hosting</p>
-        </footer>
+        <div id="modelInfo" class="model-info">
+            <span id="fileName"></span>
+        </div>
     </div>
 
-    <script src="app.js"></script>
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const viewer = document.getElementById('viewer');
+        const placeholder = document.getElementById('placeholder');
+        const loading = document.getElementById('loading');
+        const error = document.getElementById('error');
+        const uploadArea = document.getElementById('uploadArea');
+        const modelInfo = document.getElementById('modelInfo');
+        const fileName = document.getElementById('fileName');
+
+        let currentModelUrl = null;
+
+        function showLoading() {
+            placeholder.style.display = 'none';
+            error.style.display = 'none';
+            loading.style.display = 'block';
+            viewer.style.display = 'none';
+            modelInfo.style.display = 'none';
+        }
+
+        function showViewer(filename) {
+            placeholder.style.display = 'none';
+            error.style.display = 'none';
+            loading.style.display = 'none';
+            viewer.style.display = 'block';
+
+            // Hide upload area after successful load
+            uploadArea.style.display = 'none';
+
+            // Show model info
+            fileName.textContent = `📦 ${filename}`;
+            modelInfo.style.display = 'block';
+        }
+
+        function showError() {
+            placeholder.style.display = 'none';
+            loading.style.display = 'none';
+            viewer.style.display = 'none';
+            error.style.display = 'block';
+            modelInfo.style.display = 'none';
+        }
+
+        function loadModel(file) {
+            // Clean up previous model URL
+            if (currentModelUrl) {
+                URL.revokeObjectURL(currentModelUrl);
+            }
+
+            showLoading();
+            currentModelUrl = URL.createObjectURL(file);
+            viewer.src = currentModelUrl;
+
+            viewer.addEventListener('load', () => {
+                showViewer(file.name);
+            }, { once: true });
+
+            viewer.addEventListener('error', () => {
+                showError();
+                if (currentModelUrl) {
+                    URL.revokeObjectURL(currentModelUrl);
+                    currentModelUrl = null;
+                }
+            }, { once: true });
+        }
+
+        // File input handler
+        fileInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                loadModel(file);
+            }
+        });
+
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', () => {
+            if (currentModelUrl) {
+                URL.revokeObjectURL(currentModelUrl);
+            }
+        });
+    </script>
 </body>
 </html>
