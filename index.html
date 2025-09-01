@@ -124,6 +124,58 @@
             color: #555;
         }
 
+        .fullscreen-btn {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            display: none;
+            width: 48px;
+            height: 48px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .fullscreen-btn:hover {
+            background: rgba(0, 0, 0, 0.9);
+            transform: scale(1.1);
+        }
+
+        .fullscreen-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Fullscreen styles */
+        .viewer-container.fullscreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 9999;
+            border-radius: 0;
+            padding: 0;
+            background: #000;
+        }
+
+        .viewer-container.fullscreen #viewer {
+            border-radius: 0;
+            min-height: 100vh;
+        }
+
+        .viewer-container.fullscreen .fullscreen-btn {
+            top: 20px;
+            right: 20px;
+        }
+
         @media (max-width: 768px) {
             .container {
                 padding: 10px;
@@ -141,6 +193,15 @@
             #viewer {
                 min-height: 360px;
             }
+
+            .fullscreen-btn {
+                top: 20px;
+                right: 20px;
+                padding: 10px;
+                font-size: 16px;
+                width: 44px;
+                height: 44px;
+            }
         }
     </style>
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
@@ -156,7 +217,7 @@
             </div>
         </div>
 
-        <div class="viewer-container">
+        <div class="viewer-container" id="viewerContainer">
             <model-viewer
                 id="viewer"
                 camera-controls
@@ -167,6 +228,10 @@
                 shadow-intensity="1"
                 environment-image="https://modelviewer.dev/shared-assets/environments/aircraft_workshop_01_1k.hdr"
             ></model-viewer>
+
+            <button class="fullscreen-btn" id="fullscreenBtn" title="Toggle Fullscreen">
+                <span id="fullscreenIcon">⛶</span>
+            </button>
 
             <div id="placeholder" class="placeholder">
                 🎯 Upload a 3D model to start viewing
@@ -195,8 +260,12 @@
         const uploadArea = document.getElementById('uploadArea');
         const modelInfo = document.getElementById('modelInfo');
         const fileName = document.getElementById('fileName');
+        const viewerContainer = document.getElementById('viewerContainer');
+        const fullscreenBtn = document.getElementById('fullscreenBtn');
+        const fullscreenIcon = document.getElementById('fullscreenIcon');
 
         let currentModelUrl = null;
+        let isFullscreen = false;
 
         function showLoading() {
             placeholder.style.display = 'none';
@@ -204,6 +273,7 @@
             loading.style.display = 'block';
             viewer.style.display = 'none';
             modelInfo.style.display = 'none';
+            fullscreenBtn.style.display = 'none';
         }
 
         function showViewer(filename) {
@@ -215,9 +285,10 @@
             // Hide upload area after successful load
             uploadArea.style.display = 'none';
 
-            // Show model info
+            // Show model info and fullscreen button
             fileName.textContent = `📦 ${filename}`;
             modelInfo.style.display = 'block';
+            fullscreenBtn.style.display = 'flex';
         }
 
         function showError() {
@@ -226,6 +297,7 @@
             viewer.style.display = 'none';
             error.style.display = 'block';
             modelInfo.style.display = 'none';
+            fullscreenBtn.style.display = 'none';
         }
 
         function loadModel(file) {
@@ -251,11 +323,70 @@
             }, { once: true });
         }
 
+        function toggleFullscreen() {
+            if (!isFullscreen) {
+                // Enter fullscreen
+                viewerContainer.classList.add('fullscreen');
+                fullscreenIcon.textContent = '⛳';
+                isFullscreen = true;
+
+                // Try to enter browser fullscreen if available
+                if (viewerContainer.requestFullscreen) {
+                    viewerContainer.requestFullscreen().catch(() => {});
+                } else if (viewerContainer.webkitRequestFullscreen) {
+                    viewerContainer.webkitRequestFullscreen();
+                } else if (viewerContainer.msRequestFullscreen) {
+                    viewerContainer.msRequestFullscreen();
+                }
+            } else {
+                // Exit fullscreen
+                exitFullscreen();
+            }
+        }
+
+        function exitFullscreen() {
+            viewerContainer.classList.remove('fullscreen');
+            fullscreenIcon.textContent = '⛶';
+            isFullscreen = false;
+
+            // Try to exit browser fullscreen if available
+            if (document.exitFullscreen) {
+                document.exitFullscreen().catch(() => {});
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+            }
+        }
+
         // File input handler
         fileInput.addEventListener('change', (event) => {
             const file = event.target.files[0];
             if (file) {
                 loadModel(file);
+            }
+        });
+
+        // Fullscreen button handler
+        fullscreenBtn.addEventListener('click', toggleFullscreen);
+
+        // Handle browser fullscreen changes
+        document.addEventListener('fullscreenchange', () => {
+            if (!document.fullscreenElement && isFullscreen) {
+                exitFullscreen();
+            }
+        });
+
+        document.addEventListener('webkitfullscreenchange', () => {
+            if (!document.webkitFullscreenElement && isFullscreen) {
+                exitFullscreen();
+            }
+        });
+
+        // Handle escape key to exit fullscreen
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && isFullscreen) {
+                exitFullscreen();
             }
         });
 
