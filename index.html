@@ -1,880 +1,186 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dada Makanlal in MCU Campus</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: 
-                radial-gradient(ellipse at top, rgba(120, 119, 198, 0.4) 0%, transparent 70%),
-                radial-gradient(ellipse at bottom left, rgba(255, 119, 198, 0.3) 0%, transparent 60%),
-                radial-gradient(ellipse at bottom right, rgba(120, 219, 255, 0.3) 0%, transparent 60%),
-                linear-gradient(135deg, #667eea 0%, #764ba2 30%, #f093fb 70%, #667eea 100%);
-            min-height: 100vh;
-            line-height: 1.6;
-            position: relative;
-            overflow-x: hidden;
-        }
-
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
-                radial-gradient(circle at 75% 75%, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
-            background-size: 50px 50px, 80px 80px;
-            pointer-events: none;
-            z-index: 1;
-            animation: float 20s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0); }
-            50% { transform: translate(-10px, -10px); }
-        }
-
-        body::after {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.05) 32%, rgba(255,255,255,0.05) 34%, transparent 36%);
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            position: relative;
-            z-index: 2;
-        }
-
-        .header {
-            text-align: center;
-            color: white;
-            margin-bottom: 60px;
-            padding: 50px 0;
-            position: relative;
-        }
-
-        .header::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 200px;
-            height: 200px;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-            border-radius: 50%;
-            z-index: -1;
-        }
-
-        .header h1 {
-            font-size: 4em;
-            margin-bottom: 20px;
-            text-shadow: 0 6px 12px rgba(0,0,0,0.3);
-            font-weight: 800;
-            background: linear-gradient(45deg, #fff 0%, #f8f9fa 50%, #fff 100%);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            position: relative;
-        }
-
-        .header h1::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100px;
-            height: 4px;
-            background: linear-gradient(90deg, transparent, #fff, transparent);
-            border-radius: 2px;
-        }
-
-        .header p {
-            font-size: 1.4em;
-            opacity: 0.95;
-            font-weight: 300;
-            text-shadow: 0 3px 6px rgba(0,0,0,0.2);
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .models-section {
-            margin-bottom: 60px;
-        }
-
-        .section-title {
-            color: white;
-            font-size: 2.8em;
-            text-align: center;
-            margin-bottom: 20px;
-            font-weight: 800;
-            text-shadow: 0 4px 8px rgba(0,0,0,0.3);
-            background: linear-gradient(45deg, #fff, #f0f0f0);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            position: relative;
-        }
-
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 3px;
-            background: linear-gradient(90deg, transparent, #fff, transparent);
-            border-radius: 2px;
-        }
-
-        .section-subtitle {
-            color: rgba(255, 255, 255, 0.95);
-            text-align: center;
-            font-size: 1.2em;
-            margin-bottom: 50px;
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
-            margin-bottom: 50px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
-            font-weight: 400;
-        }
-
-        .model-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-            gap: 35px;
-            margin-bottom: 40px;
-        }
-
-        .model-card {
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(25px);
-            border-radius: 30px;
-            box-shadow: 
-                0 20px 50px rgba(0, 0, 0, 0.15),
-                0 8px 25px rgba(0, 0, 0, 0.08),
-                inset 0 1px 0 rgba(255, 255, 255, 0.8);
-            padding: 30px;
-            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
-            border: 2px solid rgba(255, 255, 255, 0.6);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .model-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 50%),
-                radial-gradient(circle at 30% 30%, rgba(102, 126, 234, 0.1) 0%, transparent 50%);
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .model-card > * {
-            position: relative;
-            z-index: 2;
-        }
-
-        .model-card:hover {
-            transform: translateY(-15px) scale(1.03);
-            box-shadow: 
-                0 30px 70px rgba(0, 0, 0, 0.2),
-                0 15px 35px rgba(0, 0, 0, 0.12),
-                inset 0 1px 0 rgba(255, 255, 255, 1);
-            border-color: rgba(102, 126, 234, 0.4);
-        }
-
-        .model-preview {
-            width: 100%;
-            height: 240px;
-            border-radius: 25px;
-            margin-bottom: 25px;
-            background: 
-                linear-gradient(135deg, #f8f9fa 0%, #e9ecef 50%, #f8f9fa 100%);
-            position: relative;
-            overflow: hidden;
-            box-shadow: 
-                inset 0 4px 15px rgba(0,0,0,0.1),
-                0 4px 15px rgba(0,0,0,0.05);
-        }
-
-        .model-preview::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, rgba(102, 126, 234, 0.05) 0%, transparent 50%);
-            z-index: 1;
-        }
-
-        .model-preview model-viewer {
-            width: 100%;
-            height: 100%;
-            border-radius: 25px;
-            position: relative;
-            z-index: 2;
-        }
-
-        .model-info {
-            margin-bottom: 25px;
-        }
-
-        .model-name {
-            font-size: 1.8em;
-            font-weight: 900;
-            color: #2c3e50;
-            margin-bottom: 15px;
-            line-height: 1.3;
-            background: linear-gradient(135deg, #2c3e50 0%, #34495e 50%, #2c3e50 100%);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .model-description {
-            color: #555;
-            font-size: 15px;
-            line-height: 1.7;
-            margin-bottom: 20px;
-            font-weight: 400;
-        }
-
-        .model-actions {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-        }
-
-        .btn {
-            padding: 16px 28px;
-            border: none;
-            border-radius: 15px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 700;
-            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #667eea 100%);
-            color: white;
-            flex: 1;
-            justify-content: center;
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
-        }
-
-        .btn-outline {
-            background: rgba(255, 255, 255, 0.9);
-            color: #667eea;
-            border: 2px solid rgba(102, 126, 234, 0.4);
-            backdrop-filter: blur(15px);
-        }
-
-        .btn:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 35px rgba(0,0,0,0.2);
-        }
-
-        .btn-primary:hover {
-            background: linear-gradient(135deg, #5a6fd8 0%, #6b42a0 50%, #5a6fd8 100%);
-            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.7);
-        }
-
-        .btn-outline:hover {
-            background: #667eea;
-            color: white;
-            border-color: #667eea;
-        }
-
-        .qr-icon {
-            width: 24px;
-            height: 24px;
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            border-radius: 8px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 12px;
-        }
-
-        /* Viewer Modal */
-        .viewer-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 30% 60%, rgba(120, 119, 198, 0.5) 0%, transparent 50%),
-                radial-gradient(circle at 70% 30%, rgba(255, 119, 198, 0.5) 0%, transparent 50%),
-                linear-gradient(135deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.95) 100%);
-            z-index: 10000;
-            padding: 25px;
-            backdrop-filter: blur(15px);
-        }
-
-        .viewer-content {
-            width: 100%;
-            height: 100%;
-            display: grid;
-            grid-template-columns: 1fr 380px;
-            gap: 25px;
-            max-width: 1500px;
-            margin: 0 auto;
-        }
-
-        .viewer-main {
-            background: rgba(255, 255, 255, 0.99);
-            backdrop-filter: blur(25px);
-            border-radius: 30px;
-            padding: 30px;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
-            border: 2px solid rgba(255, 255, 255, 0.7);
-        }
-
-        .viewer-sidebar {
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(25px);
-            border-radius: 30px;
-            padding: 30px;
-            overflow-y: auto;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
-            border: 2px solid rgba(255, 255, 255, 0.7);
-        }
-
-        .viewer-controls {
-            position: absolute;
-            top: 30px;
-            right: 30px;
-            display: flex;
-            gap: 15px;
-            z-index: 1000;
-        }
-
-        .control-btn {
-            background: rgba(0, 0, 0, 0.85);
-            color: white;
-            border: none;
-            border-radius: 15px;
-            padding: 16px;
-            cursor: pointer;
-            font-size: 18px;
-            transition: all 0.3s ease;
-            min-width: 52px;
-            height: 52px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(15px);
-        }
-
-        .control-btn:hover {
-            background: rgba(0, 0, 0, 0.98);
-            transform: scale(1.15);
-        }
-
-        #modelViewer {
-            width: 100%;
-            height: 100%;
-            border-radius: 25px;
-            min-height: 520px;
-        }
-
-        .sidebar-section {
-            margin-bottom: 35px;
-        }
-
-        .sidebar-section h3 {
-            color: #2c3e50;
-            font-size: 1.4em;
-            margin-bottom: 20px;
-            font-weight: 900;
-            border-bottom: 4px solid #667eea;
-            padding-bottom: 12px;
-        }
-
-        .camera-controls {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-
-        .camera-btn {
-            padding: 14px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 800;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .camera-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.25);
-        }
-
-        .bg-controls {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-        }
-
-        .bg-option {
-            width: 100%;
-            height: 45px;
-            border: 3px solid rgba(255,255,255,0.6);
-            border-radius: 15px;
-            cursor: pointer;
-            transition: all 0.4s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .bg-option::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255,255,255,0.3);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .bg-option:hover::before, .bg-option.active::before {
-            opacity: 1;
-        }
-
-        .bg-option:hover, .bg-option.active {
-            border-color: #667eea;
-            border-width: 4px;
-            transform: scale(1.08);
-        }
-
-        .bg-gray { background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); }
-        .bg-blue { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-        .bg-green { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
-        .bg-orange { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
-        .bg-dark { background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%); }
-        .bg-white { background: #ffffff; }
-
-        .share-section {
-            text-align: center;
-        }
-
-        .qr-code {
-            margin: 25px 0;
-            display: flex;
-            justify-content: center;
-        }
-
-        .share-link {
-            width: 100%;
-            padding: 16px;
-            border: 2px solid rgba(102, 126, 234, 0.3);
-            border-radius: 12px;
-            font-size: 13px;
-            margin-bottom: 18px;
-            background: rgba(248, 249, 250, 0.9);
-            backdrop-filter: blur(15px);
-        }
-
-        .interactive-guide {
-            background: rgba(248, 249, 250, 0.9);
-            backdrop-filter: blur(15px);
-            border-radius: 20px;
-            padding: 30px;
-            border: 2px solid rgba(255,255,255,0.4);
-        }
-
-        .interactive-guide ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .interactive-guide li {
-            display: flex;
-            align-items: flex-start;
-            gap: 15px;
-            margin-bottom: 18px;
-            font-size: 14px;
-            line-height: 1.6;
-        }
-
-        .interactive-guide .icon {
-            font-size: 18px;
-            min-width: 28px;
-            height: 28px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            border-radius: 8px;
-            color: white;
-            font-size: 14px;
-        }
-
-        .watermark {
-            text-align: center;
-            padding: 30px;
-            background: rgba(255, 255, 255, 0.075);
-            backdrop-filter: blur(20px);
-            border-radius: 25px;
-            margin-top: 60px;
-            border: 2px solid rgba(255, 255, 255, 0.15);
-        }
-
-        .watermark p {
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 18px;
-            font-weight: 600;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.15);
-            margin: 0;
-        }
-
-        .watermark .designer {
-            color: rgba(255, 215, 0, 0.5);
-            font-weight: 700;
-            font-size: 20px;
-        }
-
-        @media (max-width: 1024px) {
-            .viewer-content {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-
-            .viewer-sidebar {
-                order: -1;
-                max-height: 320px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 15px;
-            }
-
-            .header h1 {
-                font-size: 3em;
-            }
-
-            .model-grid {
-                grid-template-columns: 1fr;
-                gap: 25px;
-            }
-
-            .section-title {
-                font-size: 2.2em;
-            }
-
-            /* Hide multiple sections on mobile */
-            .sidebar-section:first-child,  /* 3D Viewport */
-            .sidebar-section:nth-child(2), /* Background */
-            .sidebar-section:nth-child(3)  /* About This Model */
-            {
-                display: none;
-            }
-
-            .camera-controls {
-                display: none;
-            }
-
-            .bg-controls {
-                display: none;
-            }
-
-            /* Simplify mobile modal layout - show only share and interactive guide */
-            .viewer-content {
-                grid-template-columns: 1fr;
-                gap: 15px;
-                padding: 10px;
-            }
-
-            .viewer-main {
-                padding: 20px;
-                border-radius: 20px;
-            }
-
-            .viewer-sidebar {
-                order: -1;
-                max-height: 200px;
-                padding: 20px;
-                border-radius: 20px;
-            }
-
-            .viewer-controls {
-                top: 20px;
-                right: 20px;
-                gap: 10px;
-            }
-
-            .control-btn {
-                padding: 12px;
-                font-size: 16px;
-                min-width: 44px;
-                height: 44px;
-                border-radius: 12px;
-            }
-
-            #modelViewer {
-                min-height: 400px;
-                border-radius: 20px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .header h1 {
-                font-size: 2.5em;
-            }
-
-            .model-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .viewer-modal {
-                padding: 15px;
-            }
-
-            .viewer-content {
-                padding: 0;
-            }
-
-            .viewer-main {
-                padding: 15px;
-            }
-
-            .viewer-sidebar {
-                padding: 15px;
-                max-height: 150px;
-            }
-
-            #modelViewer {
-                min-height: 350px;
-            }
-        }
-
-        /* Fullscreen mode - minimal controls */
-        .viewer-modal:fullscreen .viewer-sidebar,
-        .viewer-modal:-webkit-full-screen .viewer-sidebar,
-        .viewer-modal:-moz-full-screen .viewer-sidebar {
-            display: none;
-        }
-
-        .viewer-modal:fullscreen .viewer-content,
-        .viewer-modal:-webkit-full-screen .viewer-content,
-        .viewer-modal:-moz-full-screen .viewer-content {
-            grid-template-columns: 1fr;
-            padding: 0;
-        }
-
-        .viewer-modal:fullscreen .viewer-main,
-        .viewer-modal:-webkit-full-screen .viewer-main,
-        .viewer-modal:-moz-full-screen .viewer-main {
-            border-radius: 0;
-            background: #000;
-            padding: 0;
-        }
-
-        .viewer-modal:fullscreen #modelViewer,
-        .viewer-modal:-webkit-full-screen #modelViewer,
-        .viewer-modal:-moz-full-screen #modelViewer {
-            border-radius: 0;
-            min-height: 100vh;
-        }
-
-        .viewer-modal:fullscreen .viewer-controls,
-        .viewer-modal:-webkit-full-screen .viewer-controls,
-        .viewer-modal:-moz-full-screen .viewer-controls {
-            top: 20px;
-            right: 20px;
-        }
-    </style>
-    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Dada Makanlal in MCU Campus</title>
+<style>
+  /* Global styles omitted for brevity - keep your previous styles */
+
+  /* Fullscreen Mode */
+  .viewer-modal.fullscreen-mode {
+    padding: 0;
+  }
+
+  .viewer-modal.fullscreen-mode .viewer-content {
+    grid-template-columns: 1fr;
+    gap: 0;
+    max-width: none;
+    padding: 0;
+  }
+
+  /* Hide entire sidebar in fullscreen */
+  .viewer-modal.fullscreen-mode .viewer-sidebar {
+    display: none;
+  }
+
+  /* Remove padding, border radius of viewer main in fullscreen */
+  .viewer-modal.fullscreen-mode .viewer-main {
+    border-radius: 0;
+    padding: 0;
+    height: 100vh;
+    border: none;
+  }
+
+  /* Model viewer takes full height in fullscreen */
+  .viewer-modal.fullscreen-mode #modelViewer {
+    border-radius: 0;
+    min-height: 100vh;
+  }
+
+  /* Controls styling */
+  .viewer-controls {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    display: flex;
+    gap: 15px;
+    z-index: 1000;
+  }
+
+  /* Other styles here... */
+</style>
+<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
 </head>
 <body>
-    <div class="container">
-        <header class="header">
-            <h1>🏛️ Dada Makanlal in MCU Campus</h1>
-            <p>Advanced 3D Model Visualization Platform</p>
-        </header>
+  <div class="container">
+    <header class="header">
+      <h1>🏛️ Dada Makanlal in MCU Campus</h1>
+      <p>Advanced 3D Model Visualization Platform</p>
+    </header>
 
-        <section class="models-section">
-            <h2 class="section-title">Interactive Models</h2>
-            <p class="section-subtitle">Explore our comprehensive collection of interactive 3D models. Click to view models in detail or share them with others.</p>
+    <section class="models-section">
+      <h2 class="section-title">Interactive Models</h2>
+      <p class="section-subtitle">Explore our comprehensive collection of interactive 3D models. Click to view models in detail or share them with others.</p>
+      <div class="model-grid" id="modelGrid"></div>
+    </section>
 
-            <div class="model-grid" id="modelGrid">
-                <!-- Models will be loaded here -->
-            </div>
-        </section>
+    <div class="watermark"><p>✨ <span class="designer">Design in VC Office. MCNUJC Bhopal</span> ✨</p></div>
+  </div>
 
-        <div class="watermark">
-            <p>✨ <span class="designer">Design in VC Office. MCNUJC Bhopal</span> ✨</p>
+  <!-- Viewer Modal -->
+  <div class="viewer-modal" id="viewerModal">
+    <div class="viewer-content">
+      <div class="viewer-main">
+        <div class="viewer-controls">
+          <button class="control-btn" id="fullscreenBtn" title="Fullscreen">⛶</button>
+          <button class="control-btn" onclick="closeViewer()" title="Close">✕</button>
         </div>
-    </div>
+        <model-viewer
+          id="modelViewer"
+          camera-controls
+          touch-action="pan-y"
+          auto-rotate
+          auto-rotate-delay="3000"
+          rotation-per-second="30deg"
+          shadow-intensity="1"
+          environment-image="https://modelviewer.dev/shared-assets/environments/aircraft_workshop_01_1k.hdr"
+        ></model-viewer>
+      </div>
 
-    <!-- Viewer Modal -->
-    <div class="viewer-modal" id="viewerModal">
-        <div class="viewer-content">
-            <div class="viewer-main">
-                <div class="viewer-controls">
-                    <button class="control-btn" id="fullscreenBtn" title="Fullscreen">⛶</button>
-                    <button class="control-btn" onclick="closeViewer()" title="Close">✕</button>
-                </div>
-
-                <model-viewer
-                    id="modelViewer"
-                    camera-controls
-                    touch-action="pan-y"
-                    auto-rotate
-                    auto-rotate-delay="3000"
-                    rotation-per-second="30deg"
-                    shadow-intensity="1"
-                    environment-image="https://modelviewer.dev/shared-assets/environments/aircraft_workshop_01_1k.hdr"
-                ></model-viewer>
-            </div>
-
-            <div class="viewer-sidebar">
-                <div class="sidebar-section">
-                    <h3>🎮 3D Viewport</h3>
-                    <div class="camera-controls">
-                        <button class="camera-btn" onclick="setCameraView('front')">📱 Front</button>
-                        <button class="camera-btn" onclick="setCameraView('back')">📱 Back</button>
-                        <button class="camera-btn" onclick="setCameraView('left')">📱 Left</button>
-                        <button class="camera-btn" onclick="setCameraView('right')">📱 Right</button>
-                        <button class="camera-btn" onclick="setCameraView('top')">📱 Top</button>
-                        <button class="camera-btn" onclick="resetCamera()">🎯 Reset</button>
-                    </div>
-                </div>
-
-                <div class="sidebar-section">
-                    <h3>🎨 Background</h3>
-                    <div class="bg-controls">
-                        <div class="bg-option bg-gray active" onclick="changeBackground('gray')" title="Gray"></div>
-                        <div class="bg-option bg-blue" onclick="changeBackground('blue')" title="Blue"></div>
-                        <div class="bg-option bg-green" onclick="changeBackground('green')" title="Green"></div>
-                        <div class="bg-option bg-orange" onclick="changeBackground('orange')" title="Orange"></div>
-                        <div class="bg-option bg-dark" onclick="changeBackground('dark')" title="Dark"></div>
-                        <div class="bg-option bg-white" onclick="changeBackground('white')" title="White"></div>
-                    </div>
-                </div>
-
-                <div class="sidebar-section">
-                    <h3>📋 About This Model</h3>
-                    <div id="aboutContent">
-                        <p>Select a model to view details</p>
-                    </div>
-                </div>
-
-                <div class="sidebar-section">
-                    <h3>📤 Share Model</h3>
-                    <div class="share-section">
-                        <div class="qr-code">
-                            <canvas id="qrCanvas" style="display: none;"></canvas>
-                        </div>
-                        <input type="text" id="shareLink" class="share-link" placeholder="Model link..." readonly>
-                        <button class="btn btn-primary" onclick="copyLink()" id="copyBtn">📋 Copy Link</button>
-                        <button class="btn btn-outline" onclick="generateQR()" id="qrBtn">📱 Generate QR</button>
-                    </div>
-                </div>
-
-                <div class="sidebar-section">
-                    <h3>🎮 Interactive Features</h3>
-                    <div class="interactive-guide">
-                        <ul>
-                            <li><span class="icon">🖱️</span><strong>Rotate:</strong> Drag with mouse or swipe on touch devices</li>
-                            <li><span class="icon">🔍</span><strong>Zoom:</strong> Use scroll wheel or pinch gestures</li>
-                            <li><span class="icon">📱</span><strong>Pan:</strong> Right-click and drag to move around</li>
-                            <li><span class="icon">🎯</span><strong>Reset:</strong> Use reset button to return to default view</li>
-                            <li><span class="icon">⛶</span><strong>Fullscreen:</strong> Click fullscreen for immersive viewing</li>
-                            <li><span class="icon">🎨</span><strong>Background:</strong> Change colors and gradients</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+      <div class="viewer-sidebar">
+        <div class="sidebar-section">
+          <h3>🎮 3D Viewport</h3>
+          <div class="camera-controls">
+            <button class="camera-btn" onclick="setCameraView('front')">📱 Front</button>
+            <button class="camera-btn" onclick="setCameraView('back')">📱 Back</button>
+            <button class="camera-btn" onclick="setCameraView('left')">📱 Left</button>
+            <button class="camera-btn" onclick="setCameraView('right')">📱 Right</button>
+            <button class="camera-btn" onclick="setCameraView('top')">📱 Top</button>
+            <button class="camera-btn" onclick="resetCamera()">🎯 Reset</button>
+          </div>
         </div>
+
+        <div class="sidebar-section">
+          <h3>🎨 Background</h3>
+          <div class="bg-controls">
+            <div class="bg-option bg-gray active" onclick="changeBackground('gray')" title="Gray"></div>
+            <div class="bg-option bg-blue" onclick="changeBackground('blue')" title="Blue"></div>
+            <div class="bg-option bg-green" onclick="changeBackground('green')" title="Green"></div>
+            <div class="bg-option bg-orange" onclick="changeBackground('orange')" title="Orange"></div>
+            <div class="bg-option bg-dark" onclick="changeBackground('dark')" title="Dark"></div>
+            <div class="bg-option bg-white" onclick="changeBackground('white')" title="White"></div>
+          </div>
+        </div>
+
+        <div class="sidebar-section">
+          <h3>📋 About This Model</h3>
+          <div id="aboutContent"><p>Select a model to view details</p></div>
+        </div>
+
+        <div class="sidebar-section">
+          <h3>📤 Share Model</h3>
+          <div class="share-section">
+            <div class="qr-code">
+              <canvas id="qrCanvas" style="display: none;"></canvas>
+            </div>
+            <input type="text" id="shareLink" class="share-link" placeholder="Model link..." readonly />
+            <button class="btn btn-primary" onclick="copyLink()" id="copyBtn">📋 Copy Link</button>
+            <button class="btn btn-outline" onclick="generateQR()" id="qrBtn">📱 Generate QR</button>
+          </div>
+        </div>
+
+        <div class="sidebar-section">
+          <h3>🎮 Interactive Features</h3>
+          <div class="interactive-guide">
+            <ul>
+              <li><span class="icon">🖱️</span><strong>Rotate:</strong> Drag with mouse or swipe on touch devices</li>
+              <li><span class="icon">🔍</span><strong>Zoom:</strong> Use scroll wheel or pinch gestures</li>
+              <li><span class="icon">📱</span><strong>Pan:</strong> Right-click and drag to move around</li>
+              <li><span class="icon">🎯</span><strong>Reset:</strong> Use reset button to return to default view</li>
+              <li><span class="icon">⛶</span><strong>Fullscreen:</strong> Click fullscreen for immersive viewing</li>
+              <li><span class="icon">🎨</span><strong>Background:</strong> Change colors and gradients</li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <script>
-        // List of 3D models in the models folder
-        const models = [
-            { 
-                name: "Makanlal ji 1", 
-                file: "models/makanlal1.glb",
-                description: "Interactive 3D model showcasing the architectural details and historical significance of Dada Makanlal's first monument."
-            },
-            { 
-                name: "Makanlal ji 2", 
-                file: "models/makanlal2.glb",
-                description: "Detailed exploration of cultural elements and artistic craftsmanship representing Dada Makanlal's legacy."
-            },
-            { 
-                name: "Makanlal ji 3", 
-                file: "models/makanlal3.glb",
-                description: "Comprehensive view of architectural innovations and design principles from Dada Makanlal's era."
-            }
-            // Add more models here: { name: "Makanlal ji 4", file: "models/makanlal4.glb", description: "..." }
-        ];
+  <script>
+    const models = [
+      {
+        name: "Makanlal ji 1",
+        file: "models/makanlal1.glb",
+        description:
+          "Interactive 3D model showcasing the architectural details and historical significance of Dada Makanlal's first monument.",
+      },
+      {
+        name: "Makanlal ji 2",
+        file: "models/makanlal2.glb",
+        description:
+          "Detailed exploration of cultural elements and artistic craftsmanship representing Dada Makanlal's legacy.",
+      },
+      {
+        name: "Makanlal ji 3",
+        file: "models/makanlal3.glb",
+        description:
+          "Comprehensive view of architectural innovations and design principles from Dada Makanlal's era.",
+      },
+    ];
 
-        let currentModel = null;
-        let isFullscreen = false;
+    let currentModel = null;
+    let isFullscreen = false;
 
-        function loadModelGrid() {
-            const grid = document.getElementById('modelGrid');
-            grid.innerHTML = '';
+    function loadModelGrid() {
+      const grid = document.getElementById("modelGrid");
+      grid.innerHTML = "";
 
-            models.forEach((model, index) => {
-                const card = document.createElement('div');
-                card.className = 'model-card';
-                card.innerHTML = `
+      models.forEach((model, index) => {
+        const card = document.createElement("div");
+        card.className = "model-card";
+        card.innerHTML = `
                     <div class="model-preview">
                         <model-viewer
                             src="${model.file}"
@@ -899,212 +205,304 @@
                         </button>
                     </div>
                 `;
-                grid.appendChild(card);
-            });
-        }
+        grid.appendChild(card);
+      });
+    }
 
-        function viewModel(index) {
-            currentModel = models[index];
-            const viewer = document.getElementById('modelViewer');
-            const modal = document.getElementById('viewerModal');
-            const aboutContent = document.getElementById('aboutContent');
+    function viewModel(index) {
+      currentModel = models[index];
+      const viewer = document.getElementById("modelViewer");
+      const modal = document.getElementById("viewerModal");
+      const aboutContent = document.getElementById("aboutContent");
 
-            viewer.src = currentModel.file;
-            modal.style.display = 'block';
-            document.body.style.overflow = 'hidden';
+      viewer.src = currentModel.file;
+      modal.style.display = "block";
+      document.body.style.overflow = "hidden";
 
-            // Update about section
-            aboutContent.innerHTML = `
+      // Update about section
+      aboutContent.innerHTML = `
                 <p><strong>📁 Name:</strong> ${currentModel.name}</p>
                 <p><strong>📅 Collection:</strong> Dada Makanlal MCU Campus</p>
                 <p><strong>🎯 Description:</strong> ${currentModel.description}</p>
             `;
 
-            // Update share link
-            const shareUrl = `${window.location.origin}${window.location.pathname}?model=${index}`;
-            document.getElementById('shareLink').value = shareUrl;
+      // Update share link
+      const shareUrl = `${window.location.origin}${window.location.pathname}?model=${index}`;
+      document.getElementById("shareLink").value = shareUrl;
+    }
+
+    function closeViewer() {
+      const modal = document.getElementById("viewerModal");
+      modal.style.display = "none";
+      modal.classList.remove("fullscreen-mode");
+      document.body.style.overflow = "auto";
+      currentModel = null;
+      isFullscreen = false;
+      document.getElementById("fullscreenBtn").textContent = "⛶";
+    }
+
+    function shareModel(index) {
+      const shareUrl = `${window.location.origin}${window.location.pathname}?model=${index}`;
+
+      // Copy to clipboard
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(shareUrl).then(() => {
+          alert("Model link copied to clipboard!");
+        });
+      } else {
+        // Fallback for older browsers
+        const textArea = document.createElement("textarea");
+        textArea.value = shareUrl;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textArea);
+        alert("Model link copied to clipboard!");
+      }
+    }
+
+    function setCameraView(view) {
+      const viewer = document.getElementById("modelViewer");
+      const positions = {
+        front: "0deg 75deg 4m",
+        back: "180deg 75deg 4m",
+        left: "-90deg 75deg 4m",
+        right: "90deg 75deg 4m",
+        top: "0deg 0deg 4m",
+      };
+
+      if (positions[view]) {
+        viewer.cameraOrbit = positions[view];
+      }
+    }
+
+    function resetCamera() {
+      const viewer = document.getElementById("modelViewer");
+      viewer.cameraOrbit = "0deg 75deg 4m";
+      viewer.fieldOfView = "45deg";
+    }
+
+    function changeBackground(type) {
+      document.querySelectorAll(".bg-option").forEach((opt) => {
+        opt.classList.remove("active");
+      });
+
+      document.querySelector(`.bg-${type}`).classList.add("active");
+
+      const backgrounds = {
+        gray: "radial-gradient(ellipse at top, rgba(120, 119, 198, 0.4) 0%, transparent 70%), radial-gradient(ellipse at bottom left, rgba(255, 119, 198, 0.3) 0%, transparent 60%), radial-gradient(ellipse at bottom right, rgba(120, 219, 255, 0.3) 0%, transparent 60%), linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)",
+        blue: "radial-gradient(ellipse at top, rgba(120, 119, 198, 0.4) 0%, transparent 70%), radial-gradient(ellipse at bottom left, rgba(255, 119, 198, 0.3) 0%, transparent 60%), radial-gradient(ellipse at bottom right, rgba(120, 219, 255, 0.3) 0%, transparent 60%), linear-gradient(135deg, #667eea 0%, #764ba2 30%, #f093fb 70%, #667eea 100%)",
+        green: "radial-gradient(ellipse at top, rgba(17, 153, 142, 0.5) 0%, transparent 70%), radial-gradient(ellipse at bottom left, rgba(56, 239, 125, 0.4) 0%, transparent 60%), linear-gradient(135deg, #11998e 0%, #38ef7d 100%)",
+        orange: "radial-gradient(ellipse at top, rgba(240, 147, 251, 0.5) 0%, transparent 70%), radial-gradient(ellipse at bottom left, rgba(245, 87, 108, 0.4) 0%, transparent 60%), linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
+        dark: "radial-gradient(ellipse at top, rgba(44, 62, 80, 0.5) 0%, transparent 70%), radial-gradient(ellipse at bottom left, rgba(52, 73, 94, 0.4) 0%, transparent 60%), linear-gradient(135deg, #2c3e50 0%, #34495e 100%)",
+        white: "#ffffff",
+      };
+      document.body.style.background = backgrounds[type];
+    }
+
+    function toggleFullscreen() {
+      const modal = document.getElementById("viewerModal");
+      const btn = document.getElementById("fullscreenBtn");
+
+      if (!isFullscreen) {
+        // Enter fullscreen mode
+        modal.classList.add("fullscreen-mode");
+        btn.textContent = "⛳";
+        isFullscreen = true;
+
+        // Try browser fullscreen API
+        if (modal.requestFullscreen) {
+          modal.requestFullscreen().catch(() => {});
+        } else if (modal.webkitRequestFullscreen) {
+          modal.webkitRequestFullscreen();
+        } else if (modal.msRequestFullscreen) {
+          modal.msRequestFullscreen();
         }
+      } else {
+        // Exit fullscreen mode
+        modal.classList.remove("fullscreen-mode");
+        btn.textContent = "⛶";
+        isFullscreen = false;
 
-        function closeViewer() {
-            document.getElementById('viewerModal').style.display = 'none';
-            document.body.style.overflow = 'auto';
-            currentModel = null;
-
-            // Exit fullscreen if active
-            if (isFullscreen) {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                } else if (document.webkitExitFullscreen) {
-                    document.webkitExitFullscreen();
-                } else if (document.msExitFullscreen) {
-                    document.msExitFullscreen();
-                }
-                isFullscreen = false;
-                document.getElementById('fullscreenBtn').textContent = '⛶';
-            }
+        // Exit browser fullscreen
+        if (document.exitFullscreen) {
+          document.exitFullscreen().catch(() => {});
+        } else if (document.webkitExitFullscreen) {
+          document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) {
+          document.msExitFullscreen();
         }
+      }
+    }
 
-        function shareModel(index) {
-            const shareUrl = `${window.location.origin}${window.location.pathname}?model=${index}`;
+    // Copy share link to clipboard
+    function copyLink() {
+      const linkInput = document.getElementById("shareLink");
+      linkInput.select();
+      document.execCommand("copy");
 
-            // Copy to clipboard
-            if (navigator.clipboard) {
-                navigator.clipboard.writeText(shareUrl).then(() => {
-                    alert('Model link copied to clipboard!');
-                });
+      const btn = document.getElementById("copyBtn");
+      const originalText = btn.textContent;
+      btn.textContent = "✅ Copied!";
+      btn.style.background = "#28a745";
+
+      setTimeout(() => {
+        btn.textContent = originalText;
+        btn.style.background = "";
+      }, 2000);
+    }
+
+    // Generate QR code for sharing link
+    function generateQR() {
+      const canvas = document.getElementById("qrCanvas");
+      const link = document.getElementById("shareLink").value;
+
+      if (link) {
+        QRCode.toCanvas(
+          canvas,
+          link,
+          {
+            width: 200,
+            margin: 2,
+            color: { dark: "#000000", light: "#FFFFFF" },
+          },
+          function (error) {
+            if (error) {
+              console.error(error);
             } else {
-                // Fallback for older browsers
-                const textArea = document.createElement('textarea');
-                textArea.value = shareUrl;
-                document.body.appendChild(textArea);
-                textArea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textArea);
-                alert('Model link copied to clipboard!');
+              canvas.style.display = "block";
             }
-        }
+          }
+        );
+      }
+    }
 
-        // Camera controls
-        function setCameraView(view) {
-            const viewer = document.getElementById('modelViewer');
-            const positions = {
-                'front': '0deg 75deg 4m',
-                'back': '180deg 75deg 4m', 
-                'left': '-90deg 75deg 4m',
-                'right': '90deg 75deg 4m',
-                'top': '0deg 0deg 4m'
-            };
+    // Load model gallery grid
+    function loadModelGrid() {
+      const grid = document.getElementById("modelGrid");
+      grid.innerHTML = "";
 
-            if (positions[view]) {
-                viewer.cameraOrbit = positions[view];
-            }
-        }
+      models.forEach((model, index) => {
+        const card = document.createElement("div");
+        card.className = "model-card";
+        card.innerHTML = `
+                    <div class="model-preview">
+                        <model-viewer
+                            src="${model.file}"
+                            auto-rotate
+                            camera-controls
+                            disable-zoom
+                            disable-pan
+                            rotation-per-second="90deg"
+                            loading="lazy"
+                        ></model-viewer>
+                    </div>
+                    <div class="model-info">
+                        <h3 class="model-name">${model.name}</h3>
+                        <p class="model-description">${model.description}</p>
+                    </div>
+                    <div class="model-actions">
+                        <button class="btn btn-primary" onclick="viewModel(${index})">
+                            👁️ View Model
+                        </button>
+                        <button class="btn btn-outline" onclick="shareModel(${index})">
+                            <div class="qr-icon">⚡</div>
+                        </button>
+                    </div>
+                `;
+        grid.appendChild(card);
+      });
+    }
 
-        function resetCamera() {
-            const viewer = document.getElementById('modelViewer');
-            viewer.cameraOrbit = '0deg 75deg 4m';
-            viewer.fieldOfView = '45deg';
-        }
+    // View model in modal
+    function viewModel(index) {
+      currentModel = models[index];
+      const viewer = document.getElementById("modelViewer");
+      const modal = document.getElementById("viewerModal");
+      const aboutContent = document.getElementById("aboutContent");
 
-        // Background controls
-        function changeBackground(type) {
-            document.querySelectorAll('.bg-option').forEach(opt => {
-                opt.classList.remove('active');
-            });
+      viewer.src = currentModel.file;
+      modal.style.display = "block";
+      document.body.style.overflow = "hidden";
 
-            document.querySelector(`.bg-${type}`).classList.add('active');
+      // Update about section unless fullscreen mode
+      if (!modal.classList.contains("fullscreen-mode")) {
+        aboutContent.innerHTML = `
+                <p><strong>📁 Name:</strong> ${currentModel.name}</p>
+                <p><strong>📅 Collection:</strong> Dada Makanlal MCU Campus</p>
+                <p><strong>🎯 Description:</strong> ${currentModel.description}</p>
+            `;
+      } else {
+        aboutContent.innerHTML = '';
+      }
 
-            const backgrounds = {
-                'gray': 'radial-gradient(ellipse at top, rgba(120, 119, 198, 0.4) 0%, transparent 70%), radial-gradient(ellipse at bottom left, rgba(255, 119, 198, 0.3) 0%, transparent 60%), radial-gradient(ellipse at bottom right, rgba(120, 219, 255, 0.3) 0%, transparent 60%), linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
-                'blue': 'radial-gradient(ellipse at top, rgba(120, 119, 198, 0.4) 0%, transparent 70%), radial-gradient(ellipse at bottom left, rgba(255, 119, 198, 0.3) 0%, transparent 60%), radial-gradient(ellipse at bottom right, rgba(120, 219, 255, 0.3) 0%, transparent 60%), linear-gradient(135deg, #667eea 0%, #764ba2 30%, #f093fb 70%, #667eea 100%)',
-                'green': 'radial-gradient(ellipse at top, rgba(17, 153, 142, 0.5) 0%, transparent 70%), radial-gradient(ellipse at bottom left, rgba(56, 239, 125, 0.4) 0%, transparent 60%), linear-gradient(135deg, #11998e 0%, #38ef7d 100%)',
-                'orange': 'radial-gradient(ellipse at top, rgba(240, 147, 251, 0.5) 0%, transparent 70%), radial-gradient(ellipse at bottom left, rgba(245, 87, 108, 0.4) 0%, transparent 60%), linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-                'dark': 'radial-gradient(ellipse at top, rgba(44, 62, 80, 0.5) 0%, transparent 70%), radial-gradient(ellipse at bottom left, rgba(52, 73, 94, 0.4) 0%, transparent 60%), linear-gradient(135deg, #2c3e50 0%, #34495e 100%)',
-                'white': '#ffffff'
-            };
+      // Update share link
+      const shareUrl = `${window.location.origin}${window.location.pathname}?model=${index}`;
+      document.getElementById("shareLink").value = shareUrl;
+    }
 
-            document.body.style.background = backgrounds[type];
-        }
+    // Close the modal (exit fullscreen if enabled as well)
+    function closeViewer() {
+      const modal = document.getElementById("viewerModal");
+      modal.style.display = "none";
+      modal.classList.remove("fullscreen-mode");
+      document.body.style.overflow = "auto";
+      currentModel = null;
+      isFullscreen = false;
+      document.getElementById("fullscreenBtn").textContent = "⛶";
+    }
 
-        // Fullscreen functionality
-        function toggleFullscreen() {
-            const modal = document.getElementById('viewerModal');
-            const btn = document.getElementById('fullscreenBtn');
+    // Share model function
+    function shareModel(index) {
+      const shareUrl = `${window.location.origin}${window.location.pathname}?model=${index}`;
 
-            if (!isFullscreen) {
-                if (modal.requestFullscreen) {
-                    modal.requestFullscreen();
-                } else if (modal.webkitRequestFullscreen) {
-                    modal.webkitRequestFullscreen();
-                } else if (modal.msRequestFullscreen) {
-                    modal.msRequestFullscreen();
-                }
-                btn.textContent = '⛳';
-                isFullscreen = true;
-            } else {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                } else if (document.webkitExitFullscreen) {
-                    document.webkitExitFullscreen();
-                } else if (document.msExitFullscreen) {
-                    document.msExitFullscreen();
-                }
-                btn.textContent = '⛶';
-                isFullscreen = false;
-            }
-        }
-
-        // Share functionality
-        function copyLink() {
-            const linkInput = document.getElementById('shareLink');
-            linkInput.select();
-            document.execCommand('copy');
-
-            const btn = document.getElementById('copyBtn');
-            const originalText = btn.textContent;
-            btn.textContent = '✅ Copied!';
-            btn.style.background = '#28a745';
-
-            setTimeout(() => {
-                btn.textContent = originalText;
-                btn.style.background = '';
-            }, 2000);
-        }
-
-        function generateQR() {
-            const canvas = document.getElementById('qrCanvas');
-            const link = document.getElementById('shareLink').value;
-
-            if (link) {
-                QRCode.toCanvas(canvas, link, {
-                    width: 200,
-                    margin: 2,
-                    color: {
-                        dark: '#000000',
-                        light: '#FFFFFF'
-                    }
-                }, function (error) {
-                    if (error) {
-                        console.error(error);
-                    } else {
-                        canvas.style.display = 'block';
-                    }
-                });
-            }
-        }
-
-        // Event listeners
-        document.getElementById('fullscreenBtn').addEventListener('click', toggleFullscreen);
-
-        // Handle fullscreen changes
-        document.addEventListener('fullscreenchange', () => {
-            if (!document.fullscreenElement) {
-                document.getElementById('fullscreenBtn').textContent = '⛶';
-                isFullscreen = false;
-            }
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(shareUrl).then(() => {
+          alert("Model link copied to clipboard!");
         });
+      } else {
+        const textArea = document.createElement("textarea");
+        textArea.value = shareUrl;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textArea);
+        alert("Model link copied to clipboard!");
+      }
+    }
 
-        // Close modal on escape key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                closeViewer();
-            }
-        });
+    // Additional controls
+    function setCameraView(view) {
+      const viewer = document.getElementById("modelViewer");
+      const positions = {
+        front: "0deg 75deg 4m",
+        back: "180deg 75deg 4m",
+        left: "-90deg 75deg 4m",
+        right: "90deg 75deg 4m",
+        top: "0deg 0deg 4m",
+      };
 
-        // Handle direct model links
-        window.addEventListener('load', () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const modelIndex = urlParams.get('model');
+      if (positions[view]) {
+        viewer.cameraOrbit = positions[view];
+      }
+    }
 
-            if (modelIndex && models[modelIndex]) {
-                setTimeout(() => viewModel(parseInt(modelIndex)), 500);
-            }
+    function resetCamera() {
+      const viewer = document.getElementById("modelViewer");
+      viewer.cameraOrbit = "0deg 75deg 4m";
+      viewer.fieldOfView = "45deg";
+    }
 
-            loadModelGrid();
-        });
+    // Change background (kept for desktop, hidden on mobile)
+    function changeBackground(type) {
+      document.querySelectorAll(".bg-option").forEach((opt) => {
+        opt.classList.remove("active");
+      });
 
-        // Initialize
-        loadModelGrid();
-    </script>
-</body>
-</html>
+      document.querySelector(`.bg-${type}`).classList.add("active");
+
+      const backgrounds = {
+        gray: "radial-gradient(ellipse at top, rgba(120, 119, 198, 0.4) 0%, transparent 70%), radial-gradient(ellipse at bottom left, rgba(255, 119, 198, 0.3) 0%, transparent 60%), radial-gradient(ellipse at bottom right, rgba(120, 219, 255, 0.3) 0%, transparent 60%), linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)",
+        blue: "radial-gradient(ellipse at top, rgba(120, 119, 198, 0.4) 0%, transparent 70%), radial-gradient(ellipse at bottom left, rgba(255, 119, 198, 0.3) 0%, transparent 60%), radial-gradient(ellipse at bottom right, rgba(120, 219, 255, 0.3) 0%, transparent 60%), linear-gradient(135deg, #667eea 0%, #764ba2 30%, #f093fb 70%, #667eea 100%)",
+        green: "radial-gradient(ellipse at top, rgba(17, 153, 142, 0.5) 0%, transparent 70%), radial-gradient(ellipse at bottom left, rgba(56, 239, 125, 0.4) 0%, transparent 60%), linear-gradient(135deg, #11998e 0%, #38ef7d 100%)",
+        orange: "radial-gradient(ellipse at top, rgba(240, 147, 251, 0.5) 0%, transparent 70%), radial-gradient(ellipse at bottom left, rgba(245, 87, 108, 0.4) 0%, transparent 60%), linear-grad
