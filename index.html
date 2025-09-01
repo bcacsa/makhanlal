@@ -611,16 +611,59 @@
                 gap: 25px;
             }
 
+            .section-title {
+                font-size: 2.2em;
+            }
+
+            /* Hide 3D viewport controls on mobile */
+            .sidebar-section:first-child {
+                display: none;
+            }
+
             .camera-controls {
+                display: none;
+            }
+
+            /* Simplify mobile modal layout */
+            .viewer-content {
                 grid-template-columns: 1fr;
+                gap: 15px;
+                padding: 10px;
+            }
+
+            .viewer-main {
+                padding: 20px;
+                border-radius: 20px;
+            }
+
+            .viewer-sidebar {
+                order: -1;
+                max-height: 250px;
+                padding: 20px;
+                border-radius: 20px;
+            }
+
+            .viewer-controls {
+                top: 20px;
+                right: 20px;
+                gap: 10px;
+            }
+
+            .control-btn {
+                padding: 12px;
+                font-size: 16px;
+                min-width: 44px;
+                height: 44px;
+                border-radius: 12px;
+            }
+
+            #modelViewer {
+                min-height: 400px;
+                border-radius: 20px;
             }
 
             .bg-controls {
                 grid-template-columns: repeat(2, 1fr);
-            }
-
-            .section-title {
-                font-size: 2.2em;
             }
         }
 
@@ -631,6 +674,27 @@
 
             .model-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .viewer-modal {
+                padding: 15px;
+            }
+
+            .viewer-content {
+                padding: 0;
+            }
+
+            .viewer-main {
+                padding: 15px;
+            }
+
+            .viewer-sidebar {
+                padding: 15px;
+                max-height: 200px;
+            }
+
+            #modelViewer {
+                min-height: 350px;
             }
         }
     </style>
