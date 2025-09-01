@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Model Gallery</title>
+    <title>Dada Makanlal in Campus</title>
     <style>
         * {
             margin: 0;
@@ -18,7 +18,7 @@
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 20px;
         }
@@ -30,77 +30,38 @@
         }
 
         .header h1 {
-            font-size: 2.5em;
+            font-size: 2.8em;
             margin-bottom: 10px;
             text-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
 
-        .model-grid {
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .main-layout {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: 300px 1fr 300px;
             gap: 20px;
             margin-bottom: 30px;
         }
 
-        .model-card {
+        .sidebar {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             border-radius: 15px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
             padding: 20px;
-            text-align: center;
-            transition: transform 0.3s ease;
-            cursor: pointer;
+            height: fit-content;
         }
 
-        .model-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .model-preview {
-            width: 100%;
-            height: 200px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-        }
-
-        .model-name {
-            font-size: 1.2em;
-            font-weight: 600;
+        .sidebar h3 {
             color: #333;
-            margin-bottom: 10px;
-        }
-
-        .model-actions {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-        }
-
-        .btn {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .btn-view {
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            color: white;
-        }
-
-        .btn-share {
-            background: #28a745;
-            color: white;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            margin-bottom: 15px;
+            font-size: 1.1em;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 8px;
         }
 
         .viewer-container {
@@ -111,22 +72,22 @@
             padding: 20px;
             min-height: 600px;
             position: relative;
-            display: none;
-            margin-bottom: 20px;
+            overflow: hidden;
         }
 
         #viewer {
             width: 100%;
             height: 560px;
             border-radius: 10px;
+            display: none;
         }
 
         .viewer-controls {
             position: absolute;
-            top: 30px;
-            right: 30px;
+            top: 20px;
+            right: 20px;
             display: flex;
-            gap: 10px;
+            gap: 8px;
             z-index: 1000;
         }
 
@@ -135,10 +96,12 @@
             color: white;
             border: none;
             border-radius: 8px;
-            padding: 12px;
+            padding: 10px;
             cursor: pointer;
             font-size: 16px;
             transition: all 0.3s ease;
+            min-width: 40px;
+            height: 40px;
         }
 
         .control-btn:hover {
@@ -146,65 +109,226 @@
             transform: scale(1.1);
         }
 
-        .share-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 2000;
-            align-items: center;
-            justify-content: center;
+        .camera-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
         }
 
-        .share-content {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
+        .camera-btn {
+            padding: 8px 12px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .camera-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .background-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .bg-option {
+            width: 100%;
+            height: 30px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .bg-option:hover {
+            border-color: #667eea;
+            transform: scale(1.05);
+        }
+
+        .bg-option.active {
+            border-color: #667eea;
+            border-width: 3px;
+        }
+
+        .bg-gray { background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); }
+        .bg-blue { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .bg-green { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
+        .bg-orange { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .bg-dark { background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%); }
+        .bg-white { background: #ffffff; }
+
+        .model-info {
+            display: none;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .about-section {
+            margin-bottom: 20px;
+        }
+
+        .about-section p {
+            font-size: 14px;
+            line-height: 1.5;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .share-section {
             text-align: center;
-            max-width: 400px;
-            width: 90%;
+            margin-bottom: 20px;
         }
 
         .qr-code {
-            margin: 20px 0;
+            margin: 15px 0;
         }
 
         .share-link {
             width: 100%;
-            padding: 10px;
+            padding: 8px;
             border: 1px solid #ddd;
             border-radius: 5px;
-            margin: 10px 0;
-            font-size: 14px;
+            font-size: 12px;
+            margin-bottom: 10px;
         }
 
-        .close-btn {
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            background: none;
+        .btn {
+            width: 100%;
+            padding: 10px;
             border: none;
-            font-size: 24px;
+            border-radius: 6px;
             cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            margin-bottom: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .interactive-features {
+            font-size: 13px;
             color: #666;
         }
 
-        .back-btn {
-            background: #6c757d;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            margin-bottom: 20px;
-            font-size: 16px;
+        .interactive-features ul {
+            margin: 10px 0;
+            padding-left: 20px;
         }
 
-        .back-btn:hover {
-            background: #5a6268;
+        .interactive-features li {
+            margin: 5px 0;
+            line-height: 1.4;
+        }
+
+        .upload-area {
+            text-align: center;
+            padding: 40px 20px;
+            color: #666;
+            font-size: 18px;
+        }
+
+        .file-input-wrapper {
+            margin-top: 20px;
+        }
+
+        .file-input {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .file-input-label {
+            display: inline-block;
+            padding: 15px 25px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .file-input-label:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            color: #667eea;
+            font-size: 16px;
+            padding: 40px;
+        }
+
+        .error {
+            display: none;
+            text-align: center;
+            color: #e74c3c;
+            font-size: 16px;
+            padding: 40px;
+        }
+
+        .watermark {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            margin-top: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .watermark p {
+            color: white;
+            font-size: 16px;
+            font-weight: 500;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+            margin: 0;
+        }
+
+        .watermark .designer {
+            color: #FFD700;
+            font-weight: 600;
+        }
+
+        @media (max-width: 1024px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .sidebar {
+                order: 2;
+            }
+
+            .viewer-container {
+                order: 1;
+            }
         }
 
         @media (max-width: 768px) {
@@ -212,19 +336,42 @@
                 padding: 10px;
             }
 
-            .model-grid {
-                grid-template-columns: 1fr;
+            .header h1 {
+                font-size: 2em;
             }
 
             .viewer-controls {
-                top: 20px;
-                right: 20px;
+                top: 10px;
+                right: 10px;
             }
 
             .control-btn {
-                padding: 10px;
+                padding: 8px;
+                font-size: 14px;
+                min-width: 36px;
+                height: 36px;
+            }
+
+            .watermark p {
                 font-size: 14px;
             }
+        }
+
+        /* Fullscreen styles */
+        .fullscreen {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            z-index: 9999 !important;
+            border-radius: 0 !important;
+            background: #000 !important;
+        }
+
+        .fullscreen #viewer {
+            border-radius: 0 !important;
+            height: 100vh !important;
         }
     </style>
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
@@ -233,209 +380,336 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🎯 3D Model Gallery</h1>
-            <p>Your collection of 3D models</p>
+            <h1>🏛️ Dada Makanlal in Campus</h1>
+            <p>Interactive 3D Model Viewer</p>
         </div>
 
-        <div id="gallery" class="model-grid">
-            <!-- Models will be loaded here -->
+        <div class="main-layout">
+            <!-- Left Sidebar - Camera Controls -->
+            <div class="sidebar">
+                <h3>🎮 3D Viewport</h3>
+                <div class="camera-controls">
+                    <button class="camera-btn" onclick="setCameraView('front')">📱 Front View</button>
+                    <button class="camera-btn" onclick="setCameraView('back')">📱 Back View</button>
+                    <button class="camera-btn" onclick="setCameraView('left')">📱 Left Side</button>
+                    <button class="camera-btn" onclick="setCameraView('right')">📱 Right Side</button>
+                    <button class="camera-btn" onclick="setCameraView('top')">📱 Top View</button>
+                    <button class="camera-btn" onclick="resetCamera()">🎯 Reset Camera</button>
+                </div>
+
+                <h3 style="margin-top: 20px;">🎨 Background</h3>
+                <div class="background-controls">
+                    <div class="bg-option bg-gray active" onclick="changeBackground('gray')" title="Default Gray"></div>
+                    <div class="bg-option bg-blue" onclick="changeBackground('blue')" title="Blue Gradient"></div>
+                    <div class="bg-option bg-green" onclick="changeBackground('green')" title="Green Gradient"></div>
+                    <div class="bg-option bg-orange" onclick="changeBackground('orange')" title="Orange Gradient"></div>
+                    <div class="bg-option bg-dark" onclick="changeBackground('dark')" title="Dark Theme"></div>
+                    <div class="bg-option bg-white" onclick="changeBackground('white')" title="White Background"></div>
+                </div>
+            </div>
+
+            <!-- Main Viewer -->
+            <div class="viewer-container" id="viewerContainer">
+                <div class="viewer-controls">
+                    <button class="control-btn" id="fullscreenBtn" title="Fullscreen">⛶</button>
+                </div>
+
+                <model-viewer
+                    id="viewer"
+                    camera-controls
+                    touch-action="pan-y"
+                    auto-rotate
+                    auto-rotate-delay="3000"
+                    rotation-per-second="30deg"
+                    shadow-intensity="1"
+                    environment-image="https://modelviewer.dev/shared-assets/environments/aircraft_workshop_01_1k.hdr"
+                ></model-viewer>
+
+                <div id="uploadArea" class="upload-area">
+                    <div>🎯 Upload Your 3D Model</div>
+                    <div class="file-input-wrapper">
+                        <input type="file" id="fileInput" class="file-input" accept=".gltf,.glb">
+                        <label for="fileInput" class="file-input-label">
+                            📁 Choose GLTF/GLB File
+                        </label>
+                    </div>
+                </div>
+
+                <div id="loading" class="loading">
+                    ⏳ Loading your model...
+                </div>
+
+                <div id="error" class="error">
+                    ❌ Failed to load model. Please try a different file.
+                </div>
+            </div>
+
+            <!-- Right Sidebar - Model Info -->
+            <div class="sidebar">
+                <h3>📋 About This Model</h3>
+                <div class="about-section" id="aboutSection">
+                    <p>Upload a 3D model to see detailed information about it here.</p>
+                </div>
+
+                <h3>📤 Share Model</h3>
+                <div class="share-section">
+                    <canvas id="qrcode" class="qr-code" style="display: none;"></canvas>
+                    <input type="text" id="shareLink" class="share-link" placeholder="Model link will appear here..." readonly>
+                    <button class="btn btn-success" onclick="copyLink()" disabled id="copyBtn">📋 Copy Link</button>
+                    <button class="btn btn-primary" onclick="generateQR()" disabled id="qrBtn">📱 Generate QR Code</button>
+                </div>
+
+                <h3>🎮 Interactive Features</h3>
+                <div class="interactive-features">
+                    <ul>
+                        <li><strong>🖱️ Rotate:</strong> Drag with mouse or swipe on touch devices</li>
+                        <li><strong>🔍 Zoom:</strong> Use scroll wheel or pinch gestures</li>
+                        <li><strong>📱 Move:</strong> Right-click and drag to pan around</li>
+                        <li><strong>🎯 Reset:</strong> Use reset camera button to return to default view</li>
+                        <li><strong>📱 Fullscreen:</strong> Click fullscreen icon for immersive viewing</li>
+                        <li><strong>🎨 Background:</strong> Change background colors and gradients</li>
+                    </ul>
+                </div>
+            </div>
         </div>
 
-        <div id="viewerSection" class="viewer-container">
-            <button class="back-btn" onclick="showGallery()">← Back to Gallery</button>
-
-            <div class="viewer-controls">
-                <button class="control-btn" id="fullscreenBtn" title="Fullscreen">⛶</button>
-                <button class="control-btn" id="shareBtn" title="Share">📤</button>
-            </div>
-
-            <model-viewer
-                id="viewer"
-                camera-controls
-                touch-action="pan-y"
-                auto-rotate
-                auto-rotate-delay="3000"
-                rotation-per-second="30deg"
-                shadow-intensity="1"
-                environment-image="https://modelviewer.dev/shared-assets/environments/aircraft_workshop_01_1k.hdr"
-            ></model-viewer>
+        <div id="modelInfo" class="model-info">
+            <div id="fileName"></div>
         </div>
-    </div>
 
-    <!-- Share Modal -->
-    <div id="shareModal" class="share-modal">
-        <div class="share-content">
-            <button class="close-btn" onclick="closeShareModal()">×</button>
-            <h3>Share This Model</h3>
-            <div class="qr-code">
-                <canvas id="qrcode"></canvas>
-            </div>
-            <input type="text" id="shareLink" class="share-link" readonly>
-            <div>
-                <button class="btn btn-share" onclick="copyLink()">📋 Copy Link</button>
-            </div>
+        <!-- Watermark -->
+        <div class="watermark">
+            <p>✨ Design by <span class="designer">Akash Saini</span> ✨</p>
         </div>
     </div>
 
     <script>
-        // List of 3D models - UPDATE THIS LIST when you add new models
+        // List of 3D models - Updated names
         const models = [
-            { name: "Model 1", file: "models/model1.glb" },
-            { name: "Model 2", file: "models/model2.glb" },
-            { name: "Model 3", file: "models/model3.glb" },
-            // Add your models here like: { name: "Your Model Name", file: "models/yourfile.glb" }
+            { name: "Makanlal ji 1", file: "models/makanlal1.glb" },
+            { name: "Makanlal ji 2", file: "models/makanlal2.glb" },
+            { name: "Makanlal ji 3", file: "models/makanlal3.glb" },
+            // Add your models here like: { name: "Makanlal ji 4", file: "models/makanlal4.glb" }
         ];
 
-        let currentModel = null;
+        const fileInput = document.getElementById('fileInput');
+        const viewer = document.getElementById('viewer');
+        const uploadArea = document.getElementById('uploadArea');
+        const loading = document.getElementById('loading');
+        const error = document.getElementById('error');
+        const viewerContainer = document.getElementById('viewerContainer');
+        const fullscreenBtn = document.getElementById('fullscreenBtn');
+        const modelInfo = document.getElementById('modelInfo');
+        const fileName = document.getElementById('fileName');
+        const aboutSection = document.getElementById('aboutSection');
+        const shareLink = document.getElementById('shareLink');
+        const copyBtn = document.getElementById('copyBtn');
+        const qrBtn = document.getElementById('qrBtn');
+        const qrCanvas = document.getElementById('qrcode');
+
+        let currentModelUrl = null;
         let isFullscreen = false;
+        let currentModel = null;
 
-        function loadGallery() {
-            const gallery = document.getElementById('gallery');
-            gallery.innerHTML = '';
+        function showLoading() {
+            uploadArea.style.display = 'none';
+            error.style.display = 'none';
+            loading.style.display = 'block';
+            viewer.style.display = 'none';
+        }
 
-            models.forEach((model, index) => {
-                const card = document.createElement('div');
-                card.className = 'model-card';
-                card.innerHTML = `
-                    <model-viewer
-                        class="model-preview"
-                        src="${model.file}"
-                        auto-rotate
-                        camera-controls
-                        disable-zoom
-                        disable-pan
-                        rotation-per-second="90deg"
-                    ></model-viewer>
-                    <div class="model-name">${model.name}</div>
-                    <div class="model-actions">
-                        <button class="btn btn-view" onclick="viewModel(${index})">👁️ View</button>
-                        <button class="btn btn-share" onclick="shareModel(${index})">📤 Share</button>
-                    </div>
-                `;
-                gallery.appendChild(card);
+        function showViewer(file) {
+            uploadArea.style.display = 'none';
+            error.style.display = 'none';
+            loading.style.display = 'none';
+            viewer.style.display = 'block';
+
+            currentModel = file;
+            updateModelInfo(file);
+        }
+
+        function showError() {
+            uploadArea.style.display = 'none';
+            loading.style.display = 'none';
+            viewer.style.display = 'none';
+            error.style.display = 'block';
+        }
+
+        function updateModelInfo(file) {
+            const fileSize = (file.size / (1024 * 1024)).toFixed(2);
+            const fileType = file.name.split('.').pop().toUpperCase();
+
+            fileName.innerHTML = `📦 <strong>${file.name}</strong>`;
+
+            aboutSection.innerHTML = `
+                <p><strong>📁 File Name:</strong> ${file.name}</p>
+                <p><strong>📊 File Size:</strong> ${fileSize} MB</p>
+                <p><strong>🔖 Format:</strong> ${fileType}</p>
+                <p><strong>📅 Upload Date:</strong> ${new Date().toLocaleDateString()}</p>
+                <p><strong>🎯 Description:</strong> Interactive 3D model of Makanlal ji uploaded to Dada Makanlal Campus viewer. Use the controls to explore different viewpoints and interact with the model.</p>
+            `;
+
+            // Generate shareable link
+            const currentUrl = window.location.origin + window.location.pathname;
+            shareLink.value = currentUrl;
+            copyBtn.disabled = false;
+            qrBtn.disabled = false;
+
+            modelInfo.style.display = 'block';
+        }
+
+        function loadModel(file) {
+            if (currentModelUrl) {
+                URL.revokeObjectURL(currentModelUrl);
+            }
+
+            showLoading();
+            currentModelUrl = URL.createObjectURL(file);
+            viewer.src = currentModelUrl;
+
+            viewer.addEventListener('load', () => {
+                showViewer(file);
+            }, { once: true });
+
+            viewer.addEventListener('error', () => {
+                showError();
+                if (currentModelUrl) {
+                    URL.revokeObjectURL(currentModelUrl);
+                    currentModelUrl = null;
+                }
+            }, { once: true });
+        }
+
+        // Camera controls
+        function setCameraView(view) {
+            const positions = {
+                'front': '0deg 75deg 4m',
+                'back': '180deg 75deg 4m', 
+                'left': '-90deg 75deg 4m',
+                'right': '90deg 75deg 4m',
+                'top': '0deg 0deg 4m'
+            };
+
+            if (positions[view]) {
+                viewer.cameraOrbit = positions[view];
+            }
+        }
+
+        function resetCamera() {
+            viewer.cameraOrbit = '0deg 75deg 4m';
+            viewer.fieldOfView = '45deg';
+        }
+
+        // Background controls
+        function changeBackground(type) {
+            // Remove active class from all options
+            document.querySelectorAll('.bg-option').forEach(opt => {
+                opt.classList.remove('active');
             });
+
+            // Add active class to selected option
+            document.querySelector(`.bg-${type}`).classList.add('active');
+
+            const backgrounds = {
+                'gray': 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
+                'blue': 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                'green': 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)',
+                'orange': 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+                'dark': 'linear-gradient(135deg, #2c3e50 0%, #34495e 100%)',
+                'white': '#ffffff'
+            };
+
+            document.body.style.background = backgrounds[type];
         }
 
-        function viewModel(index) {
-            currentModel = models[index];
-            const viewer = document.getElementById('viewer');
-            viewer.src = currentModel.file;
-
-            document.getElementById('gallery').style.display = 'none';
-            document.getElementById('viewerSection').style.display = 'block';
-            document.querySelector('.header').style.display = 'none';
-        }
-
-        function showGallery() {
-            document.getElementById('gallery').style.display = 'grid';
-            document.getElementById('viewerSection').style.display = 'none';
-            document.querySelector('.header').style.display = 'block';
-            currentModel = null;
-        }
-
-        function shareModel(index) {
-            const model = models[index];
-            const baseUrl = window.location.origin + window.location.pathname;
-            const shareUrl = `${baseUrl}?model=${index}`;
-
-            showShareModal(shareUrl);
-        }
-
-        function showShareModal(url) {
-            const modal = document.getElementById('shareModal');
-            const linkInput = document.getElementById('shareLink');
-            const qrCanvas = document.getElementById('qrcode');
-
-            linkInput.value = url;
-
-            // Generate QR code
-            QRCode.toCanvas(qrCanvas, url, function (error) {
-                if (error) console.error(error);
-            });
-
-            modal.style.display = 'flex';
-        }
-
-        function closeShareModal() {
-            document.getElementById('shareModal').style.display = 'none';
-        }
-
-        function copyLink() {
-            const linkInput = document.getElementById('shareLink');
-            linkInput.select();
-            document.execCommand('copy');
-            alert('Link copied to clipboard!');
-        }
-
+        // Fullscreen functionality
         function toggleFullscreen() {
-            const viewerSection = document.getElementById('viewerSection');
-            const fullscreenBtn = document.getElementById('fullscreenBtn');
-
             if (!isFullscreen) {
-                viewerSection.style.position = 'fixed';
-                viewerSection.style.top = '0';
-                viewerSection.style.left = '0';
-                viewerSection.style.width = '100vw';
-                viewerSection.style.height = '100vh';
-                viewerSection.style.zIndex = '9999';
-                viewerSection.style.borderRadius = '0';
-                viewerSection.style.background = '#000';
-
-                const viewer = document.getElementById('viewer');
-                viewer.style.height = '100vh';
-                viewer.style.borderRadius = '0';
-
+                viewerContainer.classList.add('fullscreen');
                 fullscreenBtn.textContent = '⛳';
                 isFullscreen = true;
+
+                if (viewerContainer.requestFullscreen) {
+                    viewerContainer.requestFullscreen().catch(() => {});
+                }
             } else {
-                viewerSection.style.position = 'relative';
-                viewerSection.style.top = 'auto';
-                viewerSection.style.left = 'auto';
-                viewerSection.style.width = 'auto';
-                viewerSection.style.height = 'auto';
-                viewerSection.style.zIndex = 'auto';
-                viewerSection.style.borderRadius = '15px';
-                viewerSection.style.background = 'rgba(255, 255, 255, 0.95)';
+                exitFullscreen();
+            }
+        }
 
-                const viewer = document.getElementById('viewer');
-                viewer.style.height = '560px';
-                viewer.style.borderRadius = '10px';
+        function exitFullscreen() {
+            viewerContainer.classList.remove('fullscreen');
+            fullscreenBtn.textContent = '⛶';
+            isFullscreen = false;
 
-                fullscreenBtn.textContent = '⛶';
-                isFullscreen = false;
+            if (document.exitFullscreen) {
+                document.exitFullscreen().catch(() => {});
+            }
+        }
+
+        // Share functionality
+        function copyLink() {
+            shareLink.select();
+            document.execCommand('copy');
+
+            const originalText = copyBtn.textContent;
+            copyBtn.textContent = '✅ Copied!';
+            copyBtn.style.background = '#28a745';
+
+            setTimeout(() => {
+                copyBtn.textContent = originalText;
+                copyBtn.style.background = '';
+            }, 2000);
+        }
+
+        function generateQR() {
+            if (shareLink.value) {
+                QRCode.toCanvas(qrCanvas, shareLink.value, {
+                    width: 200,
+                    margin: 2,
+                    color: {
+                        dark: '#000000',
+                        light: '#FFFFFF'
+                    }
+                }, function (error) {
+                    if (error) {
+                        console.error(error);
+                    } else {
+                        qrCanvas.style.display = 'block';
+                    }
+                });
             }
         }
 
         // Event listeners
-        document.getElementById('fullscreenBtn').addEventListener('click', toggleFullscreen);
-        document.getElementById('shareBtn').addEventListener('click', () => {
-            if (currentModel) {
-                const modelIndex = models.findIndex(m => m.file === currentModel.file);
-                shareModel(modelIndex);
+        fileInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                loadModel(file);
             }
         });
 
-        // Handle direct model links
-        window.addEventListener('load', () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const modelIndex = urlParams.get('model');
+        fullscreenBtn.addEventListener('click', toggleFullscreen);
 
-            if (modelIndex && models[modelIndex]) {
-                viewModel(parseInt(modelIndex));
-            } else {
-                loadGallery();
+        // Handle fullscreen changes
+        document.addEventListener('fullscreenchange', () => {
+            if (!document.fullscreenElement && isFullscreen) {
+                exitFullscreen();
             }
         });
 
-        // Close modal on outside click
-        document.getElementById('shareModal').addEventListener('click', (e) => {
-            if (e.target.id === 'shareModal') {
-                closeShareModal();
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && isFullscreen) {
+                exitFullscreen();
             }
         });
 
-        // Initialize
-        loadGallery();
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', () => {
+            if (currentModelUrl) {
+                URL.revokeObjectURL(currentModelUrl);
+            }
+        });
     </script>
 </body>
 </html>
