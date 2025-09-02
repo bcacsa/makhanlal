@@ -1,508 +1,508 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Dada Makanlal in MCU Campus</title>
-<style>
-  /* Global styles omitted for brevity - keep your previous styles */
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dada Makanlal 3D Models</title>
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.1.1/model-viewer.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  /* Fullscreen Mode */
-  .viewer-modal.fullscreen-mode {
-    padding: 0;
-  }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
 
-  .viewer-modal.fullscreen-mode .viewer-content {
-    grid-template-columns: 1fr;
-    gap: 0;
-    max-width: none;
-    padding: 0;
-  }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
 
-  /* Hide entire sidebar in fullscreen */
-  .viewer-modal.fullscreen-mode .viewer-sidebar {
-    display: none;
-  }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
 
-  /* Remove padding, border radius of viewer main in fullscreen */
-  .viewer-modal.fullscreen-mode .viewer-main {
-    border-radius: 0;
-    padding: 0;
-    height: 100vh;
-    border: none;
-  }
+        .header h1 {
+            color: #fff;
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
 
-  /* Model viewer takes full height in fullscreen */
-  .viewer-modal.fullscreen-mode #modelViewer {
-    border-radius: 0;
-    min-height: 100vh;
-  }
+        .header p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
 
-  /* Controls styling */
-  .viewer-controls {
-    position: absolute;
-    top: 30px;
-    right: 30px;
-    display: flex;
-    gap: 15px;
-    z-index: 1000;
-  }
+        .watermark {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
 
-  /* Other styles here... */
-</style>
-<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+        .models-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .model-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 20px;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .model-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .model-title {
+            color: #fff;
+            font-size: 1.5rem;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 15px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .model-viewer-container {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            height: 400px;
+            margin-bottom: 15px;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        model-viewer {
+            width: 100%;
+            height: 100%;
+            border-radius: 15px;
+        }
+
+        .fullscreen-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 8px;
+            padding: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .fullscreen-btn:hover {
+            background: rgba(255, 255, 255, 1);
+            transform: scale(1.1);
+        }
+
+        .share-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .share-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .share-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .qr-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            backdrop-filter: blur(10px);
+        }
+
+        .qr-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .fullscreen-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 1500;
+        }
+
+        .fullscreen-model {
+            width: 100%;
+            height: 100%;
+        }
+
+        .fullscreen-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 8px;
+            padding: 10px;
+            cursor: pointer;
+            z-index: 1600;
+            font-size: 18px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .models-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .model-viewer-container {
+                height: 300px;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <header class="header">
-      <h1>🏛️ Dada Makanlal in MCU Campus</h1>
-      <p>Advanced 3D Model Visualization Platform</p>
-    </header>
-
-    <section class="models-section">
-      <h2 class="section-title">Interactive Models</h2>
-      <p class="section-subtitle">Explore our comprehensive collection of interactive 3D models. Click to view models in detail or share them with others.</p>
-      <div class="model-grid" id="modelGrid"></div>
-    </section>
-
-    <div class="watermark"><p>✨ <span class="designer">Design in VC Office. MCNUJC Bhopal</span> ✨</p></div>
-  </div>
-
-  <!-- Viewer Modal -->
-  <div class="viewer-modal" id="viewerModal">
-    <div class="viewer-content">
-      <div class="viewer-main">
-        <div class="viewer-controls">
-          <button class="control-btn" id="fullscreenBtn" title="Fullscreen">⛶</button>
-          <button class="control-btn" onclick="closeViewer()" title="Close">✕</button>
-        </div>
-        <model-viewer
-          id="modelViewer"
-          camera-controls
-          touch-action="pan-y"
-          auto-rotate
-          auto-rotate-delay="3000"
-          rotation-per-second="30deg"
-          shadow-intensity="1"
-          environment-image="https://modelviewer.dev/shared-assets/environments/aircraft_workshop_01_1k.hdr"
-        ></model-viewer>
-      </div>
-
-      <div class="viewer-sidebar">
-        <div class="sidebar-section">
-          <h3>🎮 3D Viewport</h3>
-          <div class="camera-controls">
-            <button class="camera-btn" onclick="setCameraView('front')">📱 Front</button>
-            <button class="camera-btn" onclick="setCameraView('back')">📱 Back</button>
-            <button class="camera-btn" onclick="setCameraView('left')">📱 Left</button>
-            <button class="camera-btn" onclick="setCameraView('right')">📱 Right</button>
-            <button class="camera-btn" onclick="setCameraView('top')">📱 Top</button>
-            <button class="camera-btn" onclick="resetCamera()">🎯 Reset</button>
-          </div>
+    <div class="container">
+        <div class="header">
+            <h1>🎭 Dada Makanlal</h1>
+            <p>Interactive 3D Model Collection</p>
         </div>
 
-        <div class="sidebar-section">
-          <h3>🎨 Background</h3>
-          <div class="bg-controls">
-            <div class="bg-option bg-gray active" onclick="changeBackground('gray')" title="Gray"></div>
-            <div class="bg-option bg-blue" onclick="changeBackground('blue')" title="Blue"></div>
-            <div class="bg-option bg-green" onclick="changeBackground('green')" title="Green"></div>
-            <div class="bg-option bg-orange" onclick="changeBackground('orange')" title="Orange"></div>
-            <div class="bg-option bg-dark" onclick="changeBackground('dark')" title="Dark"></div>
-            <div class="bg-option bg-white" onclick="changeBackground('white')" title="White"></div>
-          </div>
-        </div>
-
-        <div class="sidebar-section">
-          <h3>📋 About This Model</h3>
-          <div id="aboutContent"><p>Select a model to view details</p></div>
-        </div>
-
-        <div class="sidebar-section">
-          <h3>📤 Share Model</h3>
-          <div class="share-section">
-            <div class="qr-code">
-              <canvas id="qrCanvas" style="display: none;"></canvas>
+        <div class="models-grid">
+            <div class="model-card">
+                <h3 class="model-title">Makanlal Model 1</h3>
+                <div class="model-viewer-container">
+                    <model-viewer
+                        id="model1"
+                        src="models/makanlal1.glb"
+                        alt="Dada Makanlal 3D Model 1"
+                        auto-rotate
+                        camera-controls
+                        environment-image="neutral"
+                        shadow-intensity="1"
+                        exposure="1"
+                        tone-mapping="neutral">
+                    </model-viewer>
+                    <button class="fullscreen-btn" onclick="openFullscreen('model1')">⛶</button>
+                </div>
+                <div class="share-buttons">
+                    <button class="share-btn" onclick="shareModel(1)">📱 Share</button>
+                    <button class="share-btn" onclick="showQR(1)">📄 QR Code</button>
+                    <button class="share-btn" onclick="copyLink(1)">🔗 Copy Link</button>
+                </div>
             </div>
-            <input type="text" id="shareLink" class="share-link" placeholder="Model link..." readonly />
-            <button class="btn btn-primary" onclick="copyLink()" id="copyBtn">📋 Copy Link</button>
-            <button class="btn btn-outline" onclick="generateQR()" id="qrBtn">📱 Generate QR</button>
-          </div>
-        </div>
 
-        <div class="sidebar-section">
-          <h3>🎮 Interactive Features</h3>
-          <div class="interactive-guide">
-            <ul>
-              <li><span class="icon">🖱️</span><strong>Rotate:</strong> Drag with mouse or swipe on touch devices</li>
-              <li><span class="icon">🔍</span><strong>Zoom:</strong> Use scroll wheel or pinch gestures</li>
-              <li><span class="icon">📱</span><strong>Pan:</strong> Right-click and drag to move around</li>
-              <li><span class="icon">🎯</span><strong>Reset:</strong> Use reset button to return to default view</li>
-              <li><span class="icon">⛶</span><strong>Fullscreen:</strong> Click fullscreen for immersive viewing</li>
-              <li><span class="icon">🎨</span><strong>Background:</strong> Change colors and gradients</li>
-            </ul>
-          </div>
+            <div class="model-card">
+                <h3 class="model-title">Makanlal Model 2</h3>
+                <div class="model-viewer-container">
+                    <model-viewer
+                        id="model2"
+                        src="models/makanlal2.glb"
+                        alt="Dada Makanlal 3D Model 2"
+                        auto-rotate
+                        camera-controls
+                        environment-image="neutral"
+                        shadow-intensity="1"
+                        exposure="1"
+                        tone-mapping="neutral">
+                    </model-viewer>
+                    <button class="fullscreen-btn" onclick="openFullscreen('model2')">⛶</button>
+                </div>
+                <div class="share-buttons">
+                    <button class="share-btn" onclick="shareModel(2)">📱 Share</button>
+                    <button class="share-btn" onclick="showQR(2)">📄 QR Code</button>
+                    <button class="share-btn" onclick="copyLink(2)">🔗 Copy Link</button>
+                </div>
+            </div>
+
+            <div class="model-card">
+                <h3 class="model-title">Makanlal Model 3</h3>
+                <div class="model-viewer-container">
+                    <model-viewer
+                        id="model3"
+                        src="models/makanlal3.glb"
+                        alt="Dada Makanlal 3D Model 3"
+                        auto-rotate
+                        camera-controls
+                        environment-image="neutral"
+                        shadow-intensity="1"
+                        exposure="1"
+                        tone-mapping="neutral">
+                    </model-viewer>
+                    <button class="fullscreen-btn" onclick="openFullscreen('model3')">⛶</button>
+                </div>
+                <div class="share-buttons">
+                    <button class="share-btn" onclick="shareModel(3)">📱 Share</button>
+                    <button class="share-btn" onclick="showQR(3)">📄 QR Code</button>
+                    <button class="share-btn" onclick="copyLink(3)">🔗 Copy Link</button>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 
-  <script>
-    const models = [
-      {
-        name: "Makanlal ji 1",
-        file: "models/makanlal1.glb",
-        description:
-          "Interactive 3D model showcasing the architectural details and historical significance of Dada Makanlal's first monument.",
-      },
-      {
-        name: "Makanlal ji 2",
-        file: "models/makanlal2.glb",
-        description:
-          "Detailed exploration of cultural elements and artistic craftsmanship representing Dada Makanlal's legacy.",
-      },
-      {
-        name: "Makanlal ji 3",
-        file: "models/makanlal3.glb",
-        description:
-          "Comprehensive view of architectural innovations and design principles from Dada Makanlal's era.",
-      },
-    ];
+    <div class="watermark">
+        © 2025 Dada Makanlal Collection
+    </div>
 
-    let currentModel = null;
-    let isFullscreen = false;
+    <!-- QR Modal -->
+    <div id="qrModal" class="qr-modal">
+        <div class="qr-content">
+            <button class="close-modal" onclick="closeQR()">&times;</button>
+            <h3>Share this model</h3>
+            <div id="qrcode"></div>
+            <p id="shareUrl"></p>
+        </div>
+    </div>
 
-    function loadModelGrid() {
-      const grid = document.getElementById("modelGrid");
-      grid.innerHTML = "";
+    <!-- Fullscreen Overlay -->
+    <div id="fullscreenOverlay" class="fullscreen-overlay">
+        <button class="fullscreen-close" onclick="closeFullscreen()">&times;</button>
+        <model-viewer id="fullscreenModel" class="fullscreen-model"
+            camera-controls
+            auto-rotate
+            environment-image="neutral"
+            shadow-intensity="1"
+            exposure="1"
+            tone-mapping="neutral">
+        </model-viewer>
+    </div>
 
-      models.forEach((model, index) => {
-        const card = document.createElement("div");
-        card.className = "model-card";
-        card.innerHTML = `
-                    <div class="model-preview">
-                        <model-viewer
-                            src="${model.file}"
-                            auto-rotate
-                            camera-controls
-                            disable-zoom
-                            disable-pan
-                            rotation-per-second="90deg"
-                            loading="lazy"
-                        ></model-viewer>
-                    </div>
-                    <div class="model-info">
-                        <h3 class="model-name">${model.name}</h3>
-                        <p class="model-description">${model.description}</p>
-                    </div>
-                    <div class="model-actions">
-                        <button class="btn btn-primary" onclick="viewModel(${index})">
-                            👁️ View Model
-                        </button>
-                        <button class="btn btn-outline" onclick="shareModel(${index})">
-                            <div class="qr-icon">⚡</div>
-                        </button>
-                    </div>
-                `;
-        grid.appendChild(card);
-      });
-    }
-
-    function viewModel(index) {
-      currentModel = models[index];
-      const viewer = document.getElementById("modelViewer");
-      const modal = document.getElementById("viewerModal");
-      const aboutContent = document.getElementById("aboutContent");
-
-      viewer.src = currentModel.file;
-      modal.style.display = "block";
-      document.body.style.overflow = "hidden";
-
-      // Update about section
-      aboutContent.innerHTML = `
-                <p><strong>📁 Name:</strong> ${currentModel.name}</p>
-                <p><strong>📅 Collection:</strong> Dada Makanlal MCU Campus</p>
-                <p><strong>🎯 Description:</strong> ${currentModel.description}</p>
-            `;
-
-      // Update share link
-      const shareUrl = `${window.location.origin}${window.location.pathname}?model=${index}`;
-      document.getElementById("shareLink").value = shareUrl;
-    }
-
-    function closeViewer() {
-      const modal = document.getElementById("viewerModal");
-      modal.style.display = "none";
-      modal.classList.remove("fullscreen-mode");
-      document.body.style.overflow = "auto";
-      currentModel = null;
-      isFullscreen = false;
-      document.getElementById("fullscreenBtn").textContent = "⛶";
-    }
-
-    function shareModel(index) {
-      const shareUrl = `${window.location.origin}${window.location.pathname}?model=${index}`;
-
-      // Copy to clipboard
-      if (navigator.clipboard) {
-        navigator.clipboard.writeText(shareUrl).then(() => {
-          alert("Model link copied to clipboard!");
-        });
-      } else {
-        // Fallback for older browsers
-        const textArea = document.createElement("textarea");
-        textArea.value = shareUrl;
-        document.body.appendChild(textArea);
-        textArea.select();
-        document.execCommand("copy");
-        document.body.removeChild(textArea);
-        alert("Model link copied to clipboard!");
-      }
-    }
-
-    function setCameraView(view) {
-      const viewer = document.getElementById("modelViewer");
-      const positions = {
-        front: "0deg 75deg 4m",
-        back: "180deg 75deg 4m",
-        left: "-90deg 75deg 4m",
-        right: "90deg 75deg 4m",
-        top: "0deg 0deg 4m",
-      };
-
-      if (positions[view]) {
-        viewer.cameraOrbit = positions[view];
-      }
-    }
-
-    function resetCamera() {
-      const viewer = document.getElementById("modelViewer");
-      viewer.cameraOrbit = "0deg 75deg 4m";
-      viewer.fieldOfView = "45deg";
-    }
-
-    function changeBackground(type) {
-      document.querySelectorAll(".bg-option").forEach((opt) => {
-        opt.classList.remove("active");
-      });
-
-      document.querySelector(`.bg-${type}`).classList.add("active");
-
-      const backgrounds = {
-        gray: "radial-gradient(ellipse at top, rgba(120, 119, 198, 0.4) 0%, transparent 70%), radial-gradient(ellipse at bottom left, rgba(255, 119, 198, 0.3) 0%, transparent 60%), radial-gradient(ellipse at bottom right, rgba(120, 219, 255, 0.3) 0%, transparent 60%), linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)",
-        blue: "radial-gradient(ellipse at top, rgba(120, 119, 198, 0.4) 0%, transparent 70%), radial-gradient(ellipse at bottom left, rgba(255, 119, 198, 0.3) 0%, transparent 60%), radial-gradient(ellipse at bottom right, rgba(120, 219, 255, 0.3) 0%, transparent 60%), linear-gradient(135deg, #667eea 0%, #764ba2 30%, #f093fb 70%, #667eea 100%)",
-        green: "radial-gradient(ellipse at top, rgba(17, 153, 142, 0.5) 0%, transparent 70%), radial-gradient(ellipse at bottom left, rgba(56, 239, 125, 0.4) 0%, transparent 60%), linear-gradient(135deg, #11998e 0%, #38ef7d 100%)",
-        orange: "radial-gradient(ellipse at top, rgba(240, 147, 251, 0.5) 0%, transparent 70%), radial-gradient(ellipse at bottom left, rgba(245, 87, 108, 0.4) 0%, transparent 60%), linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
-        dark: "radial-gradient(ellipse at top, rgba(44, 62, 80, 0.5) 0%, transparent 70%), radial-gradient(ellipse at bottom left, rgba(52, 73, 94, 0.4) 0%, transparent 60%), linear-gradient(135deg, #2c3e50 0%, #34495e 100%)",
-        white: "#ffffff",
-      };
-      document.body.style.background = backgrounds[type];
-    }
-
-    function toggleFullscreen() {
-      const modal = document.getElementById("viewerModal");
-      const btn = document.getElementById("fullscreenBtn");
-
-      if (!isFullscreen) {
-        // Enter fullscreen mode
-        modal.classList.add("fullscreen-mode");
-        btn.textContent = "⛳";
-        isFullscreen = true;
-
-        // Try browser fullscreen API
-        if (modal.requestFullscreen) {
-          modal.requestFullscreen().catch(() => {});
-        } else if (modal.webkitRequestFullscreen) {
-          modal.webkitRequestFullscreen();
-        } else if (modal.msRequestFullscreen) {
-          modal.msRequestFullscreen();
+    <script>
+        // Fullscreen functionality
+        function openFullscreen(modelId) {
+            const originalModel = document.getElementById(modelId);
+            const fullscreenModel = document.getElementById('fullscreenModel');
+            const overlay = document.getElementById('fullscreenOverlay');
+            
+            fullscreenModel.src = originalModel.src;
+            fullscreenModel.alt = originalModel.alt;
+            overlay.style.display = 'block';
+            document.body.style.overflow = 'hidden';
         }
-      } else {
-        // Exit fullscreen mode
-        modal.classList.remove("fullscreen-mode");
-        btn.textContent = "⛶";
-        isFullscreen = false;
 
-        // Exit browser fullscreen
-        if (document.exitFullscreen) {
-          document.exitFullscreen().catch(() => {});
-        } else if (document.webkitExitFullscreen) {
-          document.webkitExitFullscreen();
-        } else if (document.msExitFullscreen) {
-          document.msExitFullscreen();
+        function closeFullscreen() {
+            const overlay = document.getElementById('fullscreenOverlay');
+            overlay.style.display = 'none';
+            document.body.style.overflow = 'auto';
         }
-      }
-    }
 
-    // Copy share link to clipboard
-    function copyLink() {
-      const linkInput = document.getElementById("shareLink");
-      linkInput.select();
-      document.execCommand("copy");
-
-      const btn = document.getElementById("copyBtn");
-      const originalText = btn.textContent;
-      btn.textContent = "✅ Copied!";
-      btn.style.background = "#28a745";
-
-      setTimeout(() => {
-        btn.textContent = originalText;
-        btn.style.background = "";
-      }, 2000);
-    }
-
-    // Generate QR code for sharing link
-    function generateQR() {
-      const canvas = document.getElementById("qrCanvas");
-      const link = document.getElementById("shareLink").value;
-
-      if (link) {
-        QRCode.toCanvas(
-          canvas,
-          link,
-          {
-            width: 200,
-            margin: 2,
-            color: { dark: "#000000", light: "#FFFFFF" },
-          },
-          function (error) {
-            if (error) {
-              console.error(error);
+        // Share functionality
+        function shareModel(modelNumber) {
+            const url = `${window.location.href}#model${modelNumber}`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: `Dada Makanlal Model ${modelNumber}`,
+                    text: `Check out this 3D model of Dada Makanlal!`,
+                    url: url
+                });
             } else {
-              canvas.style.display = "block";
+                copyToClipboard(url);
+                showNotification('Link copied to clipboard!');
             }
-          }
-        );
-      }
-    }
+        }
 
-    // Load model gallery grid
-    function loadModelGrid() {
-      const grid = document.getElementById("modelGrid");
-      grid.innerHTML = "";
+        function showQR(modelNumber) {
+            const url = `${window.location.href}#model${modelNumber}`;
+            const modal = document.getElementById('qrModal');
+            const qrContainer = document.getElementById('qrcode');
+            const urlDisplay = document.getElementById('shareUrl');
+            
+            qrContainer.innerHTML = '';
+            QRCode.toCanvas(qrContainer, url, {
+                width: 200,
+                margin: 2,
+                color: {
+                    dark: '#000000',
+                    light: '#ffffff'
+                }
+            });
+            
+            urlDisplay.textContent = url;
+            modal.style.display = 'block';
+        }
 
-      models.forEach((model, index) => {
-        const card = document.createElement("div");
-        card.className = "model-card";
-        card.innerHTML = `
-                    <div class="model-preview">
-                        <model-viewer
-                            src="${model.file}"
-                            auto-rotate
-                            camera-controls
-                            disable-zoom
-                            disable-pan
-                            rotation-per-second="90deg"
-                            loading="lazy"
-                        ></model-viewer>
-                    </div>
-                    <div class="model-info">
-                        <h3 class="model-name">${model.name}</h3>
-                        <p class="model-description">${model.description}</p>
-                    </div>
-                    <div class="model-actions">
-                        <button class="btn btn-primary" onclick="viewModel(${index})">
-                            👁️ View Model
-                        </button>
-                        <button class="btn btn-outline" onclick="shareModel(${index})">
-                            <div class="qr-icon">⚡</div>
-                        </button>
-                    </div>
-                `;
-        grid.appendChild(card);
-      });
-    }
+        function closeQR() {
+            document.getElementById('qrModal').style.display = 'none';
+        }
 
-    // View model in modal
-    function viewModel(index) {
-      currentModel = models[index];
-      const viewer = document.getElementById("modelViewer");
-      const modal = document.getElementById("viewerModal");
-      const aboutContent = document.getElementById("aboutContent");
+        function copyLink(modelNumber) {
+            const url = `${window.location.href}#model${modelNumber}`;
+            copyToClipboard(url);
+            showNotification('Link copied to clipboard!');
+        }
 
-      viewer.src = currentModel.file;
-      modal.style.display = "block";
-      document.body.style.overflow = "hidden";
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).catch(() => {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+            });
+        }
 
-      // Update about section unless fullscreen mode
-      if (!modal.classList.contains("fullscreen-mode")) {
-        aboutContent.innerHTML = `
-                <p><strong>📁 Name:</strong> ${currentModel.name}</p>
-                <p><strong>📅 Collection:</strong> Dada Makanlal MCU Campus</p>
-                <p><strong>🎯 Description:</strong> ${currentModel.description}</p>
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: rgba(0, 255, 0, 0.9);
+                color: white;
+                padding: 15px 20px;
+                border-radius: 10px;
+                z-index: 3000;
+                animation: slideIn 0.3s ease;
             `;
-      } else {
-        aboutContent.innerHTML = '';
-      }
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
 
-      // Update share link
-      const shareUrl = `${window.location.origin}${window.location.pathname}?model=${index}`;
-      document.getElementById("shareLink").value = shareUrl;
-    }
-
-    // Close the modal (exit fullscreen if enabled as well)
-    function closeViewer() {
-      const modal = document.getElementById("viewerModal");
-      modal.style.display = "none";
-      modal.classList.remove("fullscreen-mode");
-      document.body.style.overflow = "auto";
-      currentModel = null;
-      isFullscreen = false;
-      document.getElementById("fullscreenBtn").textContent = "⛶";
-    }
-
-    // Share model function
-    function shareModel(index) {
-      const shareUrl = `${window.location.origin}${window.location.pathname}?model=${index}`;
-
-      if (navigator.clipboard) {
-        navigator.clipboard.writeText(shareUrl).then(() => {
-          alert("Model link copied to clipboard!");
+        // Handle hash navigation
+        window.addEventListener('hashchange', function() {
+            const hash = window.location.hash;
+            if (hash.startsWith('#model')) {
+                const modelId = hash.substring(1);
+                const element = document.getElementById(modelId);
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
         });
-      } else {
-        const textArea = document.createElement("textarea");
-        textArea.value = shareUrl;
-        document.body.appendChild(textArea);
-        textArea.select();
-        document.execCommand("copy");
-        document.body.removeChild(textArea);
-        alert("Model link copied to clipboard!");
-      }
-    }
 
-    // Additional controls
-    function setCameraView(view) {
-      const viewer = document.getElementById("modelViewer");
-      const positions = {
-        front: "0deg 75deg 4m",
-        back: "180deg 75deg 4m",
-        left: "-90deg 75deg 4m",
-        right: "90deg 75deg 4m",
-        top: "0deg 0deg 4m",
-      };
+        // Close modals on escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeQR();
+                closeFullscreen();
+            }
+        });
 
-      if (positions[view]) {
-        viewer.cameraOrbit = positions[view];
-      }
-    }
+        // Close modal on outside click
+        document.getElementById('qrModal').addEventListener('click', function(event) {
+            if (event.target === this) {
+                closeQR();
+            }
+        });
 
-    function resetCamera() {
-      const viewer = document.getElementById("modelViewer");
-      viewer.cameraOrbit = "0deg 75deg 4m";
-      viewer.fieldOfView = "45deg";
-    }
+        document.getElementById('fullscreenOverlay').addEventListener('click', function(event) {
+            if (event.target === this) {
+                closeFullscreen();
+            }
+        });
 
-    // Change background (kept for desktop, hidden on mobile)
-    function changeBackground(type) {
-      document.querySelectorAll(".bg-option").forEach((opt) => {
-        opt.classList.remove("active");
-      });
+        // Add loading animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const modelViewers = document.querySelectorAll('model-viewer');
+            modelViewers.forEach(viewer => {
+                viewer.addEventListener('load', function() {
+                    this.style.opacity = '1';
+                });
+            });
+        });
+    </script>
 
-      document.querySelector(`.bg-${type}`).classList.add("active");
+    <style>
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
 
-      const backgrounds = {
-        gray: "radial-gradient(ellipse at top, rgba(120, 119, 198, 0.4) 0%, transparent 70%), radial-gradient(ellipse at bottom left, rgba(255, 119, 198, 0.3) 0%, transparent 60%), radial-gradient(ellipse at bottom right, rgba(120, 219, 255, 0.3) 0%, transparent 60%), linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)",
-        blue: "radial-gradient(ellipse at top, rgba(120, 119, 198, 0.4) 0%, transparent 70%), radial-gradient(ellipse at bottom left, rgba(255, 119, 198, 0.3) 0%, transparent 60%), radial-gradient(ellipse at bottom right, rgba(120, 219, 255, 0.3) 0%, transparent 60%), linear-gradient(135deg, #667eea 0%, #764ba2 30%, #f093fb 70%, #667eea 100%)",
-        green: "radial-gradient(ellipse at top, rgba(17, 153, 142, 0.5) 0%, transparent 70%), radial-gradient(ellipse at bottom left, rgba(56, 239, 125, 0.4) 0%, transparent 60%), linear-gradient(135deg, #11998e 0%, #38ef7d 100%)",
-        orange: "radial-gradient(ellipse at top, rgba(240, 147, 251, 0.5) 0%, transparent 70%), radial-gradient(ellipse at bottom left, rgba(245, 87, 108, 0.4) 0%, transparent 60%), linear-grad
+        model-viewer {
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+    </style>
+</body>
+</html>
