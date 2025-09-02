@@ -306,6 +306,136 @@
         .bg-gradient-purple { background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); }
         .bg-gradient-orange { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
         .bg-dark { background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%); }
+
+        /* Annotation styles */
+        .hotspot {
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: 3px solid #ffffff;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s ease;
+            position: relative;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4), 0 0 0 0 rgba(102, 126, 234, 0.7);
+            }
+            70% {
+                box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4), 0 0 0 10px rgba(102, 126, 234, 0);
+            }
+            100% {
+                box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4), 0 0 0 0 rgba(102, 126, 234, 0);
+            }
+        }
+        
+        .hotspot:hover {
+            transform: scale(1.2);
+            animation: none;
+            box-shadow: 0 6px 25px rgba(102, 126, 234, 0.8);
+        }
+        
+        .annotation-panel {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            box-shadow: 
+                0 15px 35px rgba(0, 0, 0, 0.2),
+                0 5px 15px rgba(0, 0, 0, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            max-width: 320px;
+            z-index: 1000;
+            transform: translate(-50%, -100%) translateY(-20px);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            pointer-events: none;
+        }
+        
+        .annotation-panel.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -100%) translateY(-10px);
+            pointer-events: auto;
+        }
+        
+        .annotation-content {
+            padding: 20px;
+        }
+        
+        .annotation-title {
+            font-size: 1.2em;
+            font-weight: 800;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .annotation-description {
+            color: #555;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        .annotation-details {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 8px;
+            font-size: 13px;
+        }
+        
+        .annotation-label {
+            font-weight: 600;
+            color: #667eea;
+        }
+        
+        .annotation-value {
+            color: #666;
+        }
+        
+        .annotation-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 24px;
+            height: 24px;
+            background: rgba(0, 0, 0, 0.1);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 14px;
+            color: #666;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .annotation-close:hover {
+            background: rgba(0, 0, 0, 0.2);
+            transform: scale(1.1);
+        }
+        
+        .annotation-arrow {
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 10px solid rgba(255, 255, 255, 0.98);
+        }
+
         .model-info {
             margin-bottom: 25px;
         }
@@ -446,6 +576,13 @@
         .control-btn:hover {
             background: rgba(0, 0, 0, 0.98);
             transform: scale(1.15);
+        }
+        .annotations-toggle {
+            background: rgba(102, 126, 234, 0.9);
+        }
+        .annotations-toggle.active {
+            background: rgba(102, 126, 234, 1);
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.4);
         }
         #modelViewer {
             width: 100%;
@@ -601,6 +738,9 @@
                 width: 20px;
                 height: 20px;
             }
+            .annotation-panel {
+                max-width: 280px;
+            }
         }
         @media (max-width: 480px) {
             .header h1 {
@@ -618,6 +758,9 @@
             #modelViewer {
                 min-height: 350px;
             }
+            .annotation-panel {
+                max-width: 260px;
+            }
         }
     </style>
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
@@ -628,17 +771,17 @@
     <div class="container">
         <header class="header">
             <h1>🏛️ Dada Makanlal in MCU Campus</h1>
-            <p>Advanced 3D Model Visualization Platform</p>
+            <p>Advanced 3D Model Visualization Platform with Interactive Annotations</p>
         </header>
         
         <div class="optimization-info">
-            <h3>⚡ Optimized for Fast Loading</h3>
-            <p>Models are compressed using advanced techniques and load progressively for the best experience. Use background controls to customize the viewing environment.</p>
+            <h3>⚡ Optimized with Interactive Annotations</h3>
+            <p>Models are compressed using advanced techniques and load progressively. Click on hotspots to learn about specific architectural details and historical significance.</p>
         </div>
 
         <section class="models-section">
             <h2 class="section-title">Interactive Models</h2>
-            <p class="section-subtitle">Explore our comprehensive collection of interactive 3D models. Hover over models to reveal background controls.</p>
+            <p class="section-subtitle">Explore our comprehensive collection of interactive 3D models. Hover over models to reveal background controls and click hotspots for detailed information.</p>
             <div class="model-grid" id="modelGrid">
                 <!-- Models will be loaded here -->
             </div>
@@ -652,6 +795,7 @@
         <div class="viewer-content">
             <div class="viewer-main">
                 <div class="viewer-controls">
+                    <button class="control-btn annotations-toggle" id="annotationsBtn" onclick="toggleAnnotations()" title="Toggle Annotations">📍</button>
                     <button class="control-btn" id="fullscreenBtn" title="Fullscreen">⛶</button>
                     <button class="control-btn" onclick="closeViewer()" title="Close">✕</button>
                 </div>
@@ -670,7 +814,9 @@
                     environment-image="https://modelviewer.dev/shared-assets/environments/aircraft_workshop_01_1k.hdr"
                     loading="lazy"
                     reveal="interaction"
-                ></model-viewer>
+                >
+                    <!-- Annotations will be dynamically added here -->
+                </model-viewer>
                 <div class="viewer-bg-controls">
                     <div class="viewer-bg-btn bg-white active" onclick="changeViewerBackground('white')" title="White"></div>
                     <div class="viewer-bg-btn bg-light-gray" onclick="changeViewerBackground('light-gray')" title="Light Gray"></div>
@@ -701,12 +847,106 @@
             'dark': 'https://modelviewer.dev/shared-assets/environments/moon_1k.hdr'
         };
         
+        // Annotation data for each model
+        const modelAnnotations = {
+            0: [ // Makanlal ji 1
+                {
+                    position: "0.5m 1.2m 0.3m",
+                    normal: "0 1 0",
+                    title: "🏛️ Main Dome",
+                    description: "The central dome represents the pinnacle of architectural excellence, showcasing traditional design elements.",
+                    details: {
+                        "Period": "1950s Architecture",
+                        "Style": "Neo-Classical",
+                        "Material": "Carved Stone",
+                        "Height": "3.5 meters"
+                    }
+                },
+                {
+                    position: "-0.3m 0.8m 0.5m",
+                    normal: "1 0 0",
+                    title: "📜 Inscription Panel",
+                    description: "Historical inscriptions detailing Dada Makanlal's contributions to journalism and freedom struggle.",
+                    details: {
+                        "Language": "Hindi & English",
+                        "Era": "Freedom Movement",
+                        "Significance": "Literary Heritage",
+                        "Script": "Devanagari"
+                    }
+                },
+                {
+                    position: "0m 0.2m 0.6m",
+                    normal: "0 0 1",
+                    title: "🌸 Decorative Base",
+                    description: "Intricate floral patterns and geometric designs adorning the monument's foundation.",
+                    details: {
+                        "Design": "Traditional Motifs",
+                        "Symbolism": "Cultural Heritage",
+                        "Technique": "Hand Carved",
+                        "Preservation": "Excellent"
+                    }
+                }
+            ],
+            1: [ // Makanlal ji 2
+                {
+                    position: "0.4m 1.5m 0.2m",
+                    normal: "0 1 0",
+                    title: "👑 Crown Element",
+                    description: "Symbolic crown representing Dada Makanlal's status as the 'Crown Jewel' of Hindi literature.",
+                    details: {
+                        "Symbolism": "Literary Excellence",
+                        "Design": "Royal Crown",
+                        "Material": "Polished Bronze",
+                        "Weight": "45 kg"
+                    }
+                },
+                {
+                    position: "-0.5m 1m -0.2m",
+                    normal: "-1 0 0",
+                    title: "📖 Book Relief",
+                    description: "Carved relief depicting open books, representing his extensive literary works.",
+                    details: {
+                        "Works": "Over 50 Publications",
+                        "Genre": "Poetry & Journalism",
+                        "Awards": "Sahitya Akademi",
+                        "Legacy": "National Recognition"
+                    }
+                }
+            ],
+            2: [ // Makanlal ji 3
+                {
+                    position: "0m 1.3m 0.4m",
+                    normal: "0 1 0",
+                    title: "🕊️ Freedom Symbol",
+                    description: "Dove sculpture symbolizing peace and freedom, core values of Dada Makanlal's philosophy.",
+                    details: {
+                        "Concept": "Peace & Freedom",
+                        "Medium": "Carved Marble",
+                        "Artist": "Local Craftsman",
+                        "Year": "1968"
+                    }
+                },
+                {
+                    position: "0.3m 0.5m -0.4m",
+                    normal: "0 0 -1",
+                    title: "⚖️ Justice Scales",
+                    description: "Symbolic representation of his fight for social justice and ethical journalism.",
+                    details: {
+                        "Principle": "Truth & Justice",
+                        "Journalism": "Ethical Reporting",
+                        "Movement": "Freedom Struggle",
+                        "Impact": "Social Reform"
+                    }
+                }
+            ]
+        };
+        
         // List of 3D models with poster images for fast loading
         const models = [
             { 
                 name: "Makanlal ji 1", 
                 file: "models/makanlal1.glb",
-                poster: "posters/makanlal1.jpg", // Add poster images for instant preview
+                poster: "posters/makanlal1.jpg",
                 description: "Interactive 3D model showcasing the architectural details and historical significance of Dada Makanlal's first monument."
             },
             { 
@@ -725,12 +965,13 @@
         
         let currentModel = null;
         let isFullscreen = false;
-        let preloadedModels = new Map(); // Cache for preloaded models
+        let annotationsVisible = true;
+        let preloadedModels = new Map();
 
         // Preload models in background for instant switching
         function preloadModels() {
             models.forEach((model, index) => {
-                if (index === 0) return; // Skip first model as it loads immediately
+                if (index === 0) return;
                 
                 setTimeout(() => {
                     const tempViewer = document.createElement('model-viewer');
@@ -744,7 +985,7 @@
                         document.body.removeChild(tempViewer);
                         console.log(`Preloaded: ${model.name}`);
                     });
-                }, index * 2000); // Stagger preloading to avoid overwhelming the browser
+                }, index * 2000);
             });
         }
 
@@ -756,7 +997,6 @@
                 const card = document.createElement('div');
                 card.className = 'model-card';
                 
-                // Use poster image for instant preview, load model lazily
                 const posterAttr = model.poster ? `poster="${model.poster}"` : '';
                 
                 card.innerHTML = `
@@ -799,7 +1039,6 @@
                     </div>
                 `;
                 
-                // Add loading event listeners for preview models
                 const previewViewer = card.querySelector('model-viewer');
                 const loadingIndicator = card.querySelector('.loading-indicator');
                 
@@ -816,8 +1055,92 @@
                 grid.appendChild(card);
             });
             
-            // Start preloading after grid is loaded
             setTimeout(preloadModels, 1000);
+        }
+
+        function createAnnotations(modelIndex) {
+            const viewer = document.getElementById('modelViewer');
+            const annotations = modelAnnotations[modelIndex] || [];
+            
+            // Clear existing annotations
+            const existingHotspots = viewer.querySelectorAll('.hotspot');
+            const existingPanels = viewer.querySelectorAll('.annotation-panel');
+            existingHotspots.forEach(hotspot => hotspot.remove());
+            existingPanels.forEach(panel => panel.remove());
+            
+            annotations.forEach((annotation, index) => {
+                // Create hotspot
+                const hotspot = document.createElement('button');
+                hotspot.className = 'hotspot';
+                hotspot.slot = `hotspot-${index}`;
+                hotspot.setAttribute('data-position', annotation.position);
+                hotspot.setAttribute('data-normal', annotation.normal);
+                
+                // Create annotation panel
+                const panel = document.createElement('div');
+                panel.className = 'annotation-panel';
+                panel.setAttribute('slot', `hotspot-${index}`);
+                
+                let detailsHTML = '';
+                if (annotation.details) {
+                    for (const [label, value] of Object.entries(annotation.details)) {
+                        detailsHTML += `
+                            <div class="annotation-label">${label}:</div>
+                            <div class="annotation-value">${value}</div>
+                        `;
+                    }
+                }
+                
+                panel.innerHTML = `
+                    <div class="annotation-content">
+                        <button class="annotation-close" onclick="hideAnnotation(this)">✕</button>
+                        <div class="annotation-title">${annotation.title}</div>
+                        <div class="annotation-description">${annotation.description}</div>
+                        <div class="annotation-details">${detailsHTML}</div>
+                    </div>
+                    <div class="annotation-arrow"></div>
+                `;
+                
+                // Add click event to hotspot
+                hotspot.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    hideAllAnnotations();
+                    panel.classList.add('visible');
+                });
+                
+                viewer.appendChild(hotspot);
+                viewer.appendChild(panel);
+            });
+        }
+
+        function hideAnnotation(closeBtn) {
+            const panel = closeBtn.closest('.annotation-panel');
+            panel.classList.remove('visible');
+        }
+
+        function hideAllAnnotations() {
+            const panels = document.querySelectorAll('.annotation-panel');
+            panels.forEach(panel => panel.classList.remove('visible'));
+        }
+
+        function toggleAnnotations() {
+            const btn = document.getElementById('annotationsBtn');
+            const hotspots = document.querySelectorAll('.hotspot');
+            
+            annotationsVisible = !annotationsVisible;
+            
+            hotspots.forEach(hotspot => {
+                hotspot.style.display = annotationsVisible ? 'block' : 'none';
+            });
+            
+            if (annotationsVisible) {
+                btn.classList.add('active');
+                btn.title = 'Hide Annotations';
+            } else {
+                btn.classList.remove('active');
+                btn.title = 'Show Annotations';
+                hideAllAnnotations();
+            }
         }
 
         function changePreviewBackground(modelIndex, bgType) {
@@ -825,11 +1148,9 @@
             const viewer = modelCard.querySelector('model-viewer');
             const bgControls = modelCard.querySelectorAll('.bg-btn');
             
-            // Update active state
             bgControls.forEach(btn => btn.classList.remove('active'));
             modelCard.querySelector(`.bg-${bgType}`).classList.add('active');
             
-            // Change environment and skybox
             if (backgroundEnvironments[bgType]) {
                 viewer.environmentImage = backgroundEnvironments[bgType];
                 viewer.skyboxImage = backgroundEnvironments[bgType] === 'neutral' ? null : backgroundEnvironments[bgType];
@@ -840,11 +1161,9 @@
             const viewer = document.getElementById('modelViewer');
             const bgControls = document.querySelectorAll('.viewer-bg-btn');
             
-            // Update active state
             bgControls.forEach(btn => btn.classList.remove('active'));
             document.querySelector(`.viewer-bg-controls .bg-${bgType}`).classList.add('active');
             
-            // Change environment and skybox
             if (backgroundEnvironments[bgType]) {
                 viewer.environmentImage = backgroundEnvironments[bgType];
                 viewer.skyboxImage = backgroundEnvironments[bgType] === 'neutral' ? null : backgroundEnvironments[bgType];
@@ -857,33 +1176,30 @@
             const modal = document.getElementById('viewerModal');
             const loadingOverlay = document.getElementById('loadingOverlay');
             
-            // Show modal immediately
             modal.style.display = 'block';
             document.body.style.overflow = 'hidden';
-            
-            // Show loading overlay
             loadingOverlay.classList.remove('hidden');
             
-            // Reset to default background
+            // Reset annotations button
+            document.getElementById('annotationsBtn').classList.add('active');
+            annotationsVisible = true;
+            
             document.querySelectorAll('.viewer-bg-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelector('.viewer-bg-controls .bg-white').classList.add('active');
             
-            // Set poster if available for instant preview
             if (currentModel.poster) {
                 viewer.poster = currentModel.poster;
             }
             
-            // Set model source
             viewer.src = currentModel.file;
             viewer.environmentImage = backgroundEnvironments['white'];
             viewer.skyboxImage = null;
             
-            // Hide loading overlay when model is ready
             viewer.addEventListener('load', () => {
                 loadingOverlay.classList.add('hidden');
+                createAnnotations(index);
             }, { once: true });
             
-            // Also hide on first progress update if model loads quickly
             viewer.addEventListener('progress', (event) => {
                 if (event.detail.totalProgress > 0.1) {
                     loadingOverlay.classList.add('hidden');
@@ -895,9 +1211,9 @@
             document.getElementById('viewerModal').style.display = 'none';
             document.body.style.overflow = 'auto';
             currentModel = null;
+            hideAllAnnotations();
         }
 
-        // Fullscreen functionality
         function toggleFullscreen() {
             const modal = document.getElementById('viewerModal');
             const btn = document.getElementById('fullscreenBtn');
@@ -927,7 +1243,6 @@
         // Event listeners
         document.getElementById('fullscreenBtn').addEventListener('click', toggleFullscreen);
         
-        // Handle fullscreen changes
         document.addEventListener('fullscreenchange', () => {
             if (!document.fullscreenElement) {
                 document.getElementById('fullscreenBtn').textContent = '⛶';
@@ -935,14 +1250,19 @@
             }
         });
 
-        // Close modal on escape key
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 closeViewer();
             }
         });
 
-        // Handle direct model links
+        // Close annotations when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.annotation-panel') && !e.target.closest('.hotspot')) {
+                hideAllAnnotations();
+            }
+        });
+
         window.addEventListener('load', () => {
             const urlParams = new URLSearchParams(window.location.search);
             const modelIndex = urlParams.get('model');
@@ -952,30 +1272,6 @@
             loadModelGrid();
         });
 
-        // Optimize performance with Intersection Observer
-        const observerOptions = {
-            root: null,
-            rootMargin: '50px',
-            threshold: 0.1
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                const viewer = entry.target;
-                if (entry.isIntersecting) {
-                    // Start loading when in viewport
-                    if (viewer.hasAttribute('data-lazy-src')) {
-                        viewer.src = viewer.getAttribute('data-lazy-src');
-                        viewer.removeAttribute('data-lazy-src');
-                    }
-                } else {
-                    // Pause auto-rotation when not visible to save resources
-                    viewer.autoRotate = false;
-                }
-            });
-        }, observerOptions);
-
-        // Initialize
         loadModelGrid();
     </script>
 </body>
